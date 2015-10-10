@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaxiLibre</string>
+    <string name="text">Bienvenue</string>
+    <string name="textInsc">Inscription</string>
+    <string name="textLogin">Authentification</string>
+    <string name="textInscChauffeur">Inscription chauffeur</string>
+    <string name="textInscClient">Inscription client</string>
+    <string name="nomClient">Nom</string>
+    <string name="prenomClient">Prenom</string>
+    <string name="utilClient">"Nom d'utilisateur"</string>
+    <string name="passeClient">Mot de passe</string>
+    <string name="telClient">Telephone</string>
+    <string name="courriel">Courriel</string>
+    <string name="button_send">Inscription</string>
+    <string name="nomChauffeur">Nom</string>
+    <string name="prenomChauffeur">Prenom</string>
+    <string name="telChauffeur">Telephone</string>
+    <string name="matriculeChauffeur">Matricule</string>
+    <string name="utilChauffeur">"Nom d'utilisateur"</string>
+    <string name="passeChauffeur">Mot de passe</string>
+    <string name="Enreg_Chauffeur">Inscription</string>
+    <string name="copyright">Copyright 2015</string>
+    <string name="inscription">Inscription</string>
+    <string name="inscr_client">Inscription Client</string>
+    <string name="inscr_chauffeur">Inscription Chauffeur</string>
+    <string name="login">Authentification</string>
+    <string name="nomUtilisateur">"Nom d'utilisateur"</string>
+    <string name="motDePasse">Mot de passe</string>
+    <string name="authentication">Se connecter</string>
+    <string name="retourMain">Retour</string>
+    <string name="retourInsc">Retour</string>
+    <string name="cocherClient">Client</string>
+    <string name="cocherChauffeur">Chauffeur</string>
+</resources>

@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        applicationId "libre.taxi.taxilibre"
+        minSdkVersion 23
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions{
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'org/apache/http/version.properties'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'org/apache/http/entity/mime/version.properties'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/json-lib-2.4-jdk15.jar')
+    //compile files('libs/httpclient-4.5.1.jar')
+    //compile files('libs/httpcore-4.4.1.jar')
+    //compile files('libs/httpasyncclient-4.0.1.jar')
+    //compile files('libs/httpmime-4.5.1.jar')
+    compile files('libs/ojdbc6.jar')
+}
+dependencies {
+    compile 'com.android.support:multidex:1.0.1'
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:+'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    //compile 'org.apache.httpcomponents:httpmime:4.3.6'
+    //compile "org.apache.httpcomponents:httpcore:4.3.2"
+}
