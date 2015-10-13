@@ -3,7 +3,12 @@
  */
 package libre.taxi.taxilibre;
 
-        /**
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
  *
  * @author Mohamad
  */
@@ -75,5 +80,27 @@ public class Utilisateurs  {
 
     public static boolean estUnCourrielValide(String tel){
         return tel.matches("^(.+)@(.+)$");
+    }
+
+    public static String convertStreamToString(DataInputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }

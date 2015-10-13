@@ -12,20 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import net.sf.json.JSONObject;
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.HttpURLConnection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
 
 public class InscClients extends Activity implements TextWatcher {
 
@@ -91,11 +84,12 @@ public class InscClients extends Activity implements TextWatcher {
                 passeClient = textPasseClient.getText().toString();
 
                 Clients client = new Clients(nomClient, prenomClient, telClient, utilClient, passeClient, courriel);
-                inscriptionClient.put("nomClient", client.nom);
-                inscriptionClient.put("prenomClient", client.prenom);
-                inscriptionClient.put("telClient", client.telephone);
-                inscriptionClient.put("utilClient", client.nomUtilisateur);
-                inscriptionClient.put("passeClient", client.motDePasse);
+                inscriptionClient.put("type", "client");
+                inscriptionClient.put("nomUtilisateur", client.nomUtilisateur);
+                inscriptionClient.put("motDePasse", client.motDePasse);
+                inscriptionClient.put("nom", client.nom);
+                inscriptionClient.put("prenom", client.prenom);
+                inscriptionClient.put("telephone", client.telephone);
                 inscriptionClient.put("courriel", client.courriel);
 
                 new MyAsyncTask().execute();
@@ -177,58 +171,30 @@ public class InscClients extends Activity implements TextWatcher {
         DataOutputStream printout = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/health");
+        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/inscription");
         urlConn = (HttpURLConnection) url.openConnection();
 
         //urlConn.setDoInput (true);
-        urlConn.setDoOutput (true);
+        urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type", "application/json");
-        //urlConn.setRequestProperty("Host", "android.schoolportal.gr");
+        urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         // Send POST output.
 
         printout = new DataOutputStream(urlConn.getOutputStream ());
         printout.writeUTF(inscriptionClient.toString());
+        System.out.println(inscriptionClient.toString());
+        printout.flush();
+        printout.close();
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            // OK
-            // otherwise, if any other status code is returned, or no status
-            // code is returned, do stuff in the else block
             System.out.println("OK");
         } else {
-            // Server returned HTTP error code.
             System.out.println("NOT OK");
         }
 
         input = new DataInputStream(urlConn.getInputStream());
-        String  response = convertStreamToString(input);
+        String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
-
-        printout.flush();
-        printout.close();
-
-    }
-
-    private String convertStreamToString(DataInputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 }
