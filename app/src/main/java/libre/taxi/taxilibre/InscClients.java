@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import net.sf.json.JSONObject;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -84,15 +84,22 @@ public class InscClients extends Activity implements TextWatcher {
                 passeClient = textPasseClient.getText().toString();
 
                 Clients client = new Clients(nomClient, prenomClient, telClient, utilClient, passeClient, courriel);
-                inscriptionClient.put("type", "client");
-                inscriptionClient.put("nomUtilisateur", client.nomUtilisateur);
-                inscriptionClient.put("motDePasse", client.motDePasse);
                 inscriptionClient.put("nom", client.nom);
                 inscriptionClient.put("prenom", client.prenom);
                 inscriptionClient.put("telephone", client.telephone);
+                inscriptionClient.put("type", "client");
+                inscriptionClient.put("nomUtilisateur", client.nomUtilisateur);
+                inscriptionClient.put("motDePasse", client.motDePasse);
                 inscriptionClient.put("courriel", client.courriel);
-
+                if (!inscriptionClient.getString("nom").equals("") &&
+                        !inscriptionClient.getString("prenom").equals("") &&
+                        !inscriptionClient.getString("telephone").equals("") &&
+                        !inscriptionClient.getString("nomUtilisateur").equals("") &&
+                        !inscriptionClient.getString("motDePasse").equals("") &&
+                        !inscriptionClient.getString("courriel").equals(""))
                 new MyAsyncTask().execute();
+                else
+                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
             }
         });
 
@@ -104,7 +111,6 @@ public class InscClients extends Activity implements TextWatcher {
             }
         });
     }
-//}
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after){
@@ -149,52 +155,64 @@ public class InscClients extends Activity implements TextWatcher {
 
     }
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO Auto-generated method stub
+            int result = 0;
             try {
-                postData(inscriptionClient);
+                result = postData(inscriptionClient);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == 201) {
+                Intent intent = new Intent(context, Commande.class);
+                startActivity(intent);
+            }else{
+                TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+                resulEnreg.setText("Nom d'utilisateur existe!!!!");
+            }
         }
     }
 
-    public void postData(JSONObject inscriptionClient) throws IOException {
+    public int postData(JSONObject inscriptionClient) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
-        DataOutputStream printout = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/inscription");
+        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        //urlConn.setDoInput (true);
+        urlConn.setDoInput (true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        urlConn.setRequestProperty("Accept", "application/json");
+        urlConn.setRequestMethod("POST");
 
         // Send POST output.
-
-        printout = new DataOutputStream(urlConn.getOutputStream ());
-        printout.writeUTF(inscriptionClient.toString());
+        OutputStream os = urlConn.getOutputStream();
+        os.write(inscriptionClient.toString().getBytes());
         System.out.println(inscriptionClient.toString());
-        printout.flush();
-        printout.close();
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("OK");
         } else {
-            System.out.println("NOT OK");
+            System.out.println(urlConn.getResponseCode());
         }
 
         input = new DataInputStream(urlConn.getInputStream());
         String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
+        return urlConn.getResponseCode();
     }
 }

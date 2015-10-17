@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.os.AsyncTask;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import net.sf.json.JSONObject;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -32,7 +34,9 @@ public class Login extends Activity {
     String nomUtilisateur;
     String motDePasse;
     String typeChoisi = "";
-    JSONObject loginData = new JSONObject();
+    TextView resulEnr = null;
+    static JSONObject loginData = new JSONObject();
+    final Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class Login extends Activity {
 
         retour = (Button) findViewById(R.id.retourMain);
         login = (Button) findViewById(R.id.authentication);
-        final Context context = this;
+        final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -52,11 +56,13 @@ public class Login extends Activity {
                 motDePasse = motPasse.getText().toString();
                 loginData.put("nomUtilisateur", nomUtilisateur);
                 loginData.put("motDePasse", motDePasse);
-                if (typeChoisi.equals("client"))
-                    loginData.put("type", "client");
-                else if (typeChoisi.equals("chauffeur"))
-                    loginData.put("type", "chauffeur");
-
+                /*
+                if (!loginData.getString("nomUtilisateur").equals("") &&
+                        !loginData.getString("motDePasse").equals(""))
+                    new MyAsyncTask().execute();
+                else
+                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                    */
                 new MyAsyncTask().execute();
             }
         });
@@ -91,52 +97,63 @@ public class Login extends Activity {
         }
     }
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO Auto-generated method stub
+            int result = 0;
             try {
-                postData(loginData);
+                result = postData(loginData);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == 200) {
+                Intent intent = new Intent(context, Commande.class);
+                startActivity(intent);
+            }else{
+                TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+                resulEnreg.setText("Nom d'utilisateur n'existe pas!!!!");
+            }
         }
     }
 
-    public void postData(JSONObject loginData) throws IOException {
+    public int postData(JSONObject loginData) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
-        DataOutputStream printout = null;
         DataInputStream input;
 
         url = new URL ("http://libretaxi-env.elasticbeanstalk.com/login");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        //urlConn.setDoInput (true);
-        urlConn.setDoOutput (true);
+        urlConn.setDoInput (true);
+        urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type", "application/json");
+        urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        urlConn.setRequestProperty("Accept", "application/json");
+        urlConn.setRequestMethod("POST");
 
         // Send POST output.
-        printout = new DataOutputStream(urlConn.getOutputStream ());
-        printout.writeUTF(loginData.toString());
+        OutputStream os = urlConn.getOutputStream();
+        os.write(loginData.toString().getBytes());
+        System.out.println(loginData.toString());
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("OK");
         } else {
-            System.out.println("NOT OK");
+            System.out.println(urlConn.getResponseCode());
         }
 
         input = new DataInputStream(urlConn.getInputStream());
         String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
-
-        printout.flush();
-        printout.close();
-
+        return urlConn.getResponseCode();
     }
 }

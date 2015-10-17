@@ -32,4 +32,6 @@
     <string name="retourInsc">Retour</string>
     <string name="cocherClient">Client</string>
     <string name="cocherChauffeur">Chauffeur</string>
+    <string name="commande">Commande</string>
+    <string name="commandeText">Commander un taxi</string>
 </resources>

@@ -28,5 +28,11 @@
         <activity android:name="Login"
                   android:label="@string/app_name">
         </activity>
+        <activity android:name=".Commande"
+            android:label="@string/app_name">
+        </activity>
+        <activity android:name=".ChauffeurGUI"
+            android:label="@string/app_name">
+        </activity>
     </application>
 </manifest>

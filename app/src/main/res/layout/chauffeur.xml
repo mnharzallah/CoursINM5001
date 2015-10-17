@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"  
+    android:background="@drawable/taxi">
+    <TextView
+        android:id="@+id/bienvenue"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textColor="#A9A9F5"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"/>
+    <Button 
+        android:id="@+id/retourInsc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dip"
+        android:text="@string/retourInsc"
+        android:background="@android:color/transparent"/>
+    <TextView
+    android:id="@+id/copyright"    
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:textSize="10sp"
+    android:text="@+string/copyright"
+    android:layout_marginLeft="230dip"
+    android:textColor="#000000"/>
+</LinearLayout>

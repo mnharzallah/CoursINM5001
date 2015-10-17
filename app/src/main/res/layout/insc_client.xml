@@ -8,17 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/textInscClient"
-    android:textStyle="italic"
+    android:textStyle="bold"
     android:textColor="#A9A9F5"
-    android:textSize="30sp"/>
+    android:textSize="22sp"/>
     <EditText 
         android:id="@+id/nomClient"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
-        android:layout_marginTop="40dip"
+        android:layout_marginTop="20dip"
         android:textColor="#000000"
+        android:textColorHint="#000000"
         android:hint="@string/nomClient" 
         android:textSize="20sp"
         android:padding="8dp"
@@ -32,6 +33,8 @@
         android:layout_marginTop="10dip"
         android:hint="@string/prenomClient" 
         android:textSize="20sp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:padding="8dp"
         android:background="@drawable/rounded_edittext"/>
     <EditText 
@@ -44,6 +47,8 @@
         android:layout_marginTop="10dip"
         android:hint="@string/telClient" 
         android:textSize="20sp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:padding="8dp"
         android:background="@drawable/rounded_edittext"/>
     <EditText 
@@ -54,9 +59,11 @@
         android:gravity="center"
         android:layout_marginTop="10dip"
         android:hint="@string/courriel"
+        android:textColorHint="#000000"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
         android:padding="8dp"
+        android:textColor="#000000"
         android:background="@drawable/rounded_edittext"/>
     <EditText 
         android:id="@+id/utilClient"
@@ -65,9 +72,11 @@
         android:layout_marginLeft="10dp"    
         android:gravity="center"
         android:layout_marginTop="10dip"
+        android:textColorHint="#000000"
         android:textSize="20sp"
         android:hint="@string/utilClient" 
         android:padding="8dp"
+        android:textColor="#000000"
         android:background="@drawable/rounded_edittext"/>
     <EditText 
         android:id="@+id/passeClient"
@@ -78,8 +87,10 @@
         android:layout_marginTop="10dip"
         android:textSize="20sp"
         android:hint="@string/passeClient"
+        android:textColorHint="#000000"
         android:inputType="textPassword"
         android:padding="8dp"
+        android:textColor="#000000"
         android:background="@drawable/rounded_edittext"/>
     <Button 
         android:id="@+id/button_send"
@@ -89,20 +100,22 @@
         android:layout_marginTop="15dip"
         android:text="@string/button_send"
         android:background="@drawable/rounded_button"/>
-    <Button 
-        android:id="@+id/retourInsc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dip"
-        android:text="@string/retourInsc"
-        android:background="@android:color/transparent"/>
     <TextView
     android:id="@+id/resultat"    
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textStyle="bold"
-    android:textSize="15sp"
+    android:textSize="18sp"
+    android:layout_marginTop="15dip"
     android:textColor="#FF0000"/>
+    <Button
+        android:id="@+id/retourInsc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:text="@string/retourInsc"
+        android:layout_margin="5dp"
+        android:background="@android:color/transparent"/>
     <TextView
     android:id="@+id/copyright"    
     android:layout_width="fill_parent"
@@ -110,7 +123,6 @@
     android:textStyle="bold"
     android:textSize="10sp"
     android:text="@+string/copyright"
-    android:layout_marginTop="70dip"
     android:layout_marginLeft="230dip"
     android:textColor="#000000"/>
 </LinearLayout>

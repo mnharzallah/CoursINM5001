@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.InputStream;
 
 /**
  *
@@ -82,7 +83,7 @@ public class Utilisateurs  {
         return tel.matches("^(.+)@(.+)$");
     }
 
-    public static String convertStreamToString(DataInputStream is) {
+    public static String convertStreamToString(InputStream is) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -102,5 +103,13 @@ public class Utilisateurs  {
             }
         }
         return sb.toString();
+    }
+
+    String getPrenom(){
+        return prenom;
+    }
+
+    public String getNom(){
+        return nom;
     }
 }

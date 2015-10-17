@@ -8,16 +8,17 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/textInscChauffeur"
-    android:textStyle="italic"
+    android:textStyle="bold"
     android:textColor="#A9A9F5"
-    android:textSize="30sp"/>
+    android:textSize="25dp"/>
     <EditText 
         android:id="@+id/nomChauffeur"
         android:layout_width="300dp"
+        android:textColorHint="#000000"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
-        android:layout_marginTop="40dip"
+        android:layout_marginTop="25dip"
         android:textColor="#000000"
         android:hint="@string/nomChauffeur" 
         android:textSize="20sp"
@@ -26,11 +27,13 @@
     <EditText 
         android:id="@+id/prenomChauffeur"
         android:layout_width="300dp"
+        android:textColorHint="#000000"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:layout_marginTop="10dip"
-        android:hint="@string/prenomChauffeur" 
+        android:textColor="#000000"
+        android:hint="@string/prenomChauffeur"
         android:textSize="20sp"
         android:padding="8dp"
         android:background="@drawable/rounded_edittext"/>
@@ -40,6 +43,8 @@
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:layout_marginTop="10dip"
         android:inputType="number"
         android:hint="@string/telChauffeur" 
@@ -50,8 +55,10 @@
         android:id="@+id/matriculeChauffeur"
         android:layout_width="300dp"
         android:layout_height="40dp"
+        android:textColorHint="#000000"
         android:layout_marginLeft="10dp"
         android:gravity="center"
+        android:textColor="#000000"
         android:layout_marginTop="10dip"
         android:textSize="20sp"
         android:hint="@string/matriculeChauffeur" 
@@ -63,6 +70,8 @@
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:layout_marginTop="10dip"
         android:hint="@string/utilChauffeur" 
         android:textSize="20sp"
@@ -72,9 +81,11 @@
         android:id="@+id/passeChauffeur"
         android:layout_width="300dp"
         android:layout_height="40dp"
+        android:textColor="#000000"
         android:layout_marginLeft="10dp"
         android:inputType="textPassword"
         android:gravity="center"
+        android:textColorHint="#000000"
         android:layout_marginTop="10dip"
         android:hint="@string/passeChauffeur" 
         android:textSize="20sp"
@@ -88,20 +99,21 @@
         android:layout_marginTop="15dip"
         android:text="@string/Enreg_Chauffeur"
         android:background="@drawable/rounded_button"/>
+    <TextView
+        android:id="@+id/resultat"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        android:textColor="#FF0000"/>
     <Button 
         android:id="@+id/retourInsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dip"
+        android:layout_marginTop="8dip"
         android:text="@string/retourInsc"
         android:background="@android:color/transparent"/>
-    <TextView
-    android:id="@+id/resultat"    
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:textSize="15sp"
-    android:textColor="#FF0000"/>
     <TextView
     android:id="@+id/copyright"    
     android:layout_width="fill_parent"
@@ -109,7 +121,6 @@
     android:textStyle="bold"
     android:textSize="10sp"
     android:text="@+string/copyright"
-    android:layout_marginTop="70dip"
     android:layout_marginLeft="230dip"
     android:textColor="#000000"/>
 </LinearLayout>

@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import net.sf.json.JSONObject;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -92,11 +92,20 @@ public class InscChauffeurs extends Activity implements TextWatcher{
                 inscriptionChauffeur.put("nomUtilisateur", chauffeur.nomUtilisateur);
                 inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
                 inscriptionChauffeur.put("matricule", chauffeur.matricule);
-
+/*
+                if (!inscriptionChauffeur.getString("nom").equals("") &&
+                        !inscriptionChauffeur.getString("prenom").equals("") &&
+                        !inscriptionChauffeur.getString("telephone").equals("") &&
+                        !inscriptionChauffeur.getString("nomUtilisateur").equals("") &&
+                        !inscriptionChauffeur.getString("motDePasse").equals("") &&
+                        !inscriptionChauffeur.getString("matricule").equals(""))
+                    new MyAsyncTask().execute();
+                else
+                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                    */
                 new MyAsyncTask().execute();
             }
         });
-
 
         retourInsc.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -150,53 +159,63 @@ public class InscChauffeurs extends Activity implements TextWatcher{
 
         }
     }
-    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO Auto-generated method stub
+            int resultat = 0;
             try {
-                postData(inscriptionChauffeur);
+                resultat = postData(inscriptionChauffeur);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return resultat;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == 201) {
+                Intent intent = new Intent(context, ChauffeurGUI.class);
+                startActivity(intent);
+            }else{
+                TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+                resulEnreg.setText("Nom d'utilisateur existe!!!!");
+            }
         }
     }
 
-    public void postData(JSONObject inscriptionClient) throws IOException {
+    public int postData(JSONObject inscriptionChauffeur) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
-        DataOutputStream printout = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/inscription");
+        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        //urlConn.setDoInput (true);
-        urlConn.setDoOutput (true);
+        urlConn.setDoInput (true);
+        urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type", "application/json");
+        urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        urlConn.setRequestProperty("Accept", "application/json");
+        urlConn.setRequestMethod("POST");
 
         // Send POST output.
-        printout = new DataOutputStream(urlConn.getOutputStream ());
-        printout.writeUTF(inscriptionClient.toString());
+        OutputStream os = urlConn.getOutputStream();
+        os.write(inscriptionChauffeur.toString().getBytes());
         System.out.println(inscriptionChauffeur.toString());
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("OK");
         } else {
-            System.out.println("NOT OK");
+            System.out.println(urlConn.getResponseCode());
         }
 
         input = new DataInputStream(urlConn.getInputStream());
         String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
-
-        printout.flush();
-        printout.close();
-
+        return urlConn.getResponseCode();
     }
 }
