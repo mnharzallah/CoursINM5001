@@ -60,6 +60,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         textTelChauffeur.addTextChangedListener(this);
 
         textMatChauffeur = (EditText) findViewById(R.id.matriculeChauffeur);
+        textMatChauffeur.addTextChangedListener(this);
 
         textUtilChauffeur = (EditText) findViewById(R.id.utilChauffeur);
         textUtilChauffeur.addTextChangedListener(this);
@@ -92,7 +93,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
                 inscriptionChauffeur.put("nomUtilisateur", chauffeur.nomUtilisateur);
                 inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
                 inscriptionChauffeur.put("matricule", chauffeur.matricule);
-/*
+
                 if (!inscriptionChauffeur.getString("nom").equals("") &&
                         !inscriptionChauffeur.getString("prenom").equals("") &&
                         !inscriptionChauffeur.getString("telephone").equals("") &&
@@ -102,8 +103,6 @@ public class InscChauffeurs extends Activity implements TextWatcher{
                     new MyAsyncTask().execute();
                 else
                     resulEnreg.setText("Un ou plusieurs champs vide!!!");
-                    */
-                new MyAsyncTask().execute();
             }
         });
 
@@ -115,12 +114,13 @@ public class InscChauffeurs extends Activity implements TextWatcher{
             }
         });
     }
-    //}
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after){
         textNomChauffeur.setError(null);
         textPrenomChauffeur.setError(null);
         textTelChauffeur.setError(null);
+        textMatChauffeur.setError(null);
         textUtilChauffeur.setError(null);
         textPasseChauffeur.setError(null);
     }
@@ -131,6 +131,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         textNomChauffeur.setError(null);
         textPrenomChauffeur.setError(null);
         textTelChauffeur.setError(null);
+        textMatChauffeur.setError(null);
         textUtilChauffeur.setError(null);
         textPasseChauffeur.setError(null);
     }
@@ -139,24 +140,17 @@ public class InscChauffeurs extends Activity implements TextWatcher{
     public void afterTextChanged(Editable s) {
 
         if (!Utilisateurs.estUneEntreeValide(textNomChauffeur.getText().toString()) && s == textNomChauffeur.getEditableText()) {
-
-            textNomChauffeur.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textNomChauffeur.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUneEntreeValide(textPrenomChauffeur.getText().toString()) && s == textPrenomChauffeur.getEditableText()) {
-
-            textPrenomChauffeur.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textPrenomChauffeur.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnNumeroDeTelValide(textTelChauffeur.getText().toString()) && s == textTelChauffeur.getEditableText()) {
-
-            textTelChauffeur.setError("SVP entrez un numero de telephone valide");
-
+            textTelChauffeur.setError("Veuillez entrer un numero de telephone valide");
+        } else if (!Chauffeurs.validerMatricule(textMatChauffeur.getText().toString()) && s == textMatChauffeur.getEditableText()) {
+            textMatChauffeur.setError("Veuillez entrer 10 chiffres");
         } else if (!Utilisateurs.estUneEntreeValide(textUtilChauffeur.getText().toString()) && s == textUtilChauffeur.getEditableText()) {
-
-            textUtilChauffeur.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textUtilChauffeur.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnMotDePasse(textPasseChauffeur.getText().toString()) && s == textPasseChauffeur.getEditableText()) {
-            textPasseChauffeur.setError("SVP entrez un mot de passe entre 4 et 8 charactere");
-
+            textPasseChauffeur.setError("Veuillez entrer entrer 4 et 8 caracteres");
         }
     }
     private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {

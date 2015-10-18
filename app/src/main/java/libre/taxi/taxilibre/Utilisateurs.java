@@ -4,7 +4,6 @@
 package libre.taxi.taxilibre;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.InputStream;
@@ -27,25 +26,21 @@ public class Utilisateurs  {
         } else {
             this.telephone = "";
         }
-
         if (nom != null) {
             this.nom = nom;
         } else {
             this.nom = "";
         }
-
         if (prenom != null) {
             this.prenom = prenom;
         } else {
             this.prenom = "";
         }
-
         if (nomUtilisateur != null) {
             this.nomUtilisateur = nomUtilisateur;
         } else {
             this.nomUtilisateur = "";
         }
-
         if (motDePasse != null) {
             this.motDePasse = motDePasse;
         } else {
@@ -63,7 +58,6 @@ public class Utilisateurs  {
             }
             compteur++;
         }
-
         return estValide;
     }
 
@@ -103,13 +97,5 @@ public class Utilisateurs  {
             }
         }
         return sb.toString();
-    }
-
-    String getPrenom(){
-        return prenom;
-    }
-
-    public String getNom(){
-        return nom;
     }
 }

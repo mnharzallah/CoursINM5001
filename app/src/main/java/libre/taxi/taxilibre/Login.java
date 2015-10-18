@@ -13,7 +13,6 @@ import android.widget.RadioButton;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import net.sf.json.JSONObject;
 import java.io.DataInputStream;
 import java.io.OutputStream;
@@ -56,14 +55,13 @@ public class Login extends Activity {
                 motDePasse = motPasse.getText().toString();
                 loginData.put("nomUtilisateur", nomUtilisateur);
                 loginData.put("motDePasse", motDePasse);
-                /*
+
                 if (!loginData.getString("nomUtilisateur").equals("") &&
-                        !loginData.getString("motDePasse").equals(""))
-                    new MyAsyncTask().execute();
-                else
-                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
-                    */
+                        !loginData.getString("motDePasse").equals("") &&
+                        (typeChoisi.equals("client") || typeChoisi.equals("chauffeur")))
                 new MyAsyncTask().execute();
+                else
+                resulEnreg.setText("Un ou plusieurs champs vide!!!");
             }
         });
 
@@ -115,8 +113,13 @@ public class Login extends Activity {
         @Override
         protected void onPostExecute(Integer result) {
             if (result == 200) {
-                Intent intent = new Intent(context, Commande.class);
-                startActivity(intent);
+                if (typeChoisi.equals("client")) {
+                    Intent intent = new Intent(context, Commande.class);
+                    startActivity(intent);
+                } else if (typeChoisi.equals("chauffeur")) {
+                    Intent intent = new Intent(context, ChauffeurGUI.class);
+                    startActivity(intent);
+                }
             }else{
                 TextView resulEnreg = (TextView) findViewById(R.id.resultat);
                 resulEnreg.setText("Nom d'utilisateur n'existe pas!!!!");
@@ -154,6 +157,7 @@ public class Login extends Activity {
         input = new DataInputStream(urlConn.getInputStream());
         String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
+        System.out.println(urlConn.getResponseCode());
         return urlConn.getResponseCode();
     }
 }

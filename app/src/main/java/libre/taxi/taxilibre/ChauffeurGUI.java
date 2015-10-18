@@ -20,13 +20,18 @@ public class ChauffeurGUI extends  Activity {
 
         bienvenue = (TextView) findViewById(R.id.bienvenue);
         retour = (Button) findViewById(R.id.retourInsc);
-        bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur"));
+
+        if (!Login.loginData.getString("nomUtilisateur").equals(""))
+            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
+        else if (!InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur").equals(""))
+            bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur"));
+
         final Context context = this;
 
         retour.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, Inscription.class);
+                Intent intent = new Intent(context, Login.class);
                 startActivity(intent);
             }
         });

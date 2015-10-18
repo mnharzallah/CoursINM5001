@@ -25,7 +25,7 @@
         android:id="@+id/retourInsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dip"
+        android:layout_marginTop="200dip"
         android:text="@string/retourInsc"
         android:background="@android:color/transparent"/>
     <TextView
@@ -35,7 +35,6 @@
     android:textStyle="bold"
     android:textSize="10sp"
     android:text="@string/copyright"
-    android:layout_marginTop="10dip"
     android:layout_marginLeft="220dip"
     android:textColor="#000000"/>
 </LinearLayout>

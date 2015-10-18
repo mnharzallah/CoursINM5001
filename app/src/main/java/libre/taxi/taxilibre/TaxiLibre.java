@@ -26,7 +26,6 @@ public class TaxiLibre extends Activity {
 
         inscription = (Button) findViewById(R.id.inscription);
         login = (Button) findViewById(R.id.login);
-        
         final Context context = this;
 
         inscription.setOnClickListener(new View.OnClickListener() {

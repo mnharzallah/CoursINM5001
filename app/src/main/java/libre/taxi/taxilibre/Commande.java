@@ -31,7 +31,7 @@ public class Commande extends  Activity {
         retour.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, Inscription.class);
+                Intent intent = new Intent(context, Login.class);
                 startActivity(intent);
             }
         });

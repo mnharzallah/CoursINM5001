@@ -125,28 +125,17 @@ public class InscClients extends Activity implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (!Utilisateurs.estUneEntreeValide(textNomClient.getText().toString()) && s == textNomClient.getEditableText()) {
-
-            textNomClient.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textNomClient.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUneEntreeValide(textPrenomClient.getText().toString()) && s == textPrenomClient.getEditableText()) {
-
-            textPrenomClient.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textPrenomClient.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnNumeroDeTelValide(textTelClient.getText().toString()) && s == textTelClient.getEditableText()) {
-
-            textTelClient.setError("SVP entrez un numero de telephone valide");
-
+            textTelClient.setError("Veuillez entrer un numero de telephone valide");
         } else if (!Utilisateurs.estUnCourrielValide(textCourriel.getText().toString()) && s == textCourriel.getEditableText()) {
-
-            textCourriel.setError("SVP entrez une adresse courriel valide");
-
+            textCourriel.setError("Veuillez entrer une addresse courriel valide");
         } else if (!Utilisateurs.estUneEntreeValide(textUtilClient.getText().toString()) && s == textUtilClient.getEditableText()) {
-
-            textUtilClient.setError("SVP entrez votre nom correcte 2 caracter au minimum");
-
+            textUtilClient.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnMotDePasse(textPasseClient.getText().toString()) && s == textPasseClient.getEditableText()) {
-
-            textPasseClient.setError("SVP entrez un mot de passe entre 4 et 8 charactere");
+            textPasseClient.setError("Veuillez entrez un mot de passe entre 4 et 8 caracteres");
         }
     }
 
