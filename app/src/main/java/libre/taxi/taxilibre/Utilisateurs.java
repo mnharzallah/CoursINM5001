@@ -26,22 +26,22 @@ public class Utilisateurs  {
         } else {
             this.telephone = "";
         }
-        if (nom != null) {
+        if (nom != null && Utilisateurs.estUneEntreeValide(nom)) {
             this.nom = nom;
         } else {
             this.nom = "";
         }
-        if (prenom != null) {
+        if (prenom != null && Utilisateurs.estUneEntreeValide(prenom)) {
             this.prenom = prenom;
         } else {
             this.prenom = "";
         }
-        if (nomUtilisateur != null) {
+        if (nomUtilisateur != null && Utilisateurs.estUneEntreeValide(nomUtilisateur)) {
             this.nomUtilisateur = nomUtilisateur;
         } else {
             this.nomUtilisateur = "";
         }
-        if (motDePasse != null) {
+        if (motDePasse != null && Utilisateurs.estUnMotDePasse(motDePasse)) {
             this.motDePasse = motDePasse;
         } else {
             this.motDePasse = "";

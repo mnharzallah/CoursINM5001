@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 /**
  *
  * @author Mohamad
@@ -41,6 +44,8 @@ public class Login extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
         retour = (Button) findViewById(R.id.retourMain);
         login = (Button) findViewById(R.id.authentication);

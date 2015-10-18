@@ -24,7 +24,7 @@ public class Chauffeurs extends Utilisateurs {
         boolean estValide = true;
         if (matricule.length() == 10) {
             while (compteur < matricule.length() && estValide) {
-                if (matricule.charAt(compteur) < '0' && matricule.charAt(compteur) > '9') {
+                if (matricule.charAt(compteur) < '0' || matricule.charAt(compteur) > '9') {
                     estValide = false;
                 }
                 compteur++;

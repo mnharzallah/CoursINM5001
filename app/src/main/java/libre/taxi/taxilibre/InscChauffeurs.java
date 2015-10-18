@@ -1,8 +1,11 @@
 package libre.taxi.taxilibre;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -47,6 +50,8 @@ public class InscChauffeurs extends Activity implements TextWatcher{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.insc_chauffeur);
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
         final Button button = (Button) findViewById(R.id.Enreg_Chauffeur);
 

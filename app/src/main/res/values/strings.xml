@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TaxiLibre</string>
-    <string name="text">Bienvenue</string>
-    <string name="textInsc">Inscription</string>
-    <string name="textLogin">Authentification</string>
-    <string name="textInscChauffeur">Inscription chauffeur</string>
-    <string name="textInscClient">Inscription client</string>
+    <string name="text">""</string>
+    <string name="textInsc">""</string>
+    <string name="textLogin">""</string>
+    <string name="textInscChauffeur">""</string>
+    <string name="textInscClient">""</string>
     <string name="nomClient">Nom</string>
     <string name="prenomClient">Prenom</string>
     <string name="utilClient">"Nom d'utilisateur"</string>
@@ -20,7 +20,7 @@
     <string name="utilChauffeur">"Nom d'utilisateur"</string>
     <string name="passeChauffeur">Mot de passe</string>
     <string name="Enreg_Chauffeur">Inscription</string>
-    <string name="copyright">Copyright 2015</string>
+    <string name="copyright">""</string>
     <string name="inscription">Inscription</string>
     <string name="inscr_client">Inscription Client</string>
     <string name="inscr_chauffeur">Inscription Chauffeur</string>
@@ -32,6 +32,6 @@
     <string name="retourInsc">Retour</string>
     <string name="cocherClient">Client</string>
     <string name="cocherChauffeur">Chauffeur</string>
-    <string name="commande">Commande</string>
+    <string name="commande">""</string>
     <string name="commandeText">Commander un taxi</string>
 </resources>
