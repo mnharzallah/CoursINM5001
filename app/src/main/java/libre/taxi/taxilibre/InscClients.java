@@ -95,13 +95,13 @@ public class InscClients extends Activity implements TextWatcher {
                 inscriptionClient.put("type", "client");
                 inscriptionClient.put("nomUtilisateur", client.nomUtilisateur);
                 inscriptionClient.put("motDePasse", client.motDePasse);
-                inscriptionClient.put("courriel", client.courriel);
+                inscriptionClient.put("identifiant", client.courriel);
                 if (!inscriptionClient.getString("nom").equals("") &&
                         !inscriptionClient.getString("prenom").equals("") &&
                         !inscriptionClient.getString("telephone").equals("") &&
                         !inscriptionClient.getString("nomUtilisateur").equals("") &&
                         !inscriptionClient.getString("motDePasse").equals("") &&
-                        !inscriptionClient.getString("courriel").equals(""))
+                        !inscriptionClient.getString("identifiant").equals(""))
                 new MyAsyncTask().execute();
                 else
                     resulEnreg.setText("Un ou plusieurs champs vide!!!");

@@ -79,8 +79,8 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                java.sql.Connection conn = null;
-                java.sql.PreparedStatement stmt = null;
+                //java.sql.Connection conn = null;
+                //java.sql.PreparedStatement stmt = null;
 
                 nomChauffeur = textNomChauffeur.getText().toString();
                 prenomChauffeur = textPrenomChauffeur.getText().toString();
@@ -97,14 +97,14 @@ public class InscChauffeurs extends Activity implements TextWatcher{
                 inscriptionChauffeur.put("type", "chauffeur");
                 inscriptionChauffeur.put("nomUtilisateur", chauffeur.nomUtilisateur);
                 inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
-                inscriptionChauffeur.put("matricule", chauffeur.matricule);
+                inscriptionChauffeur.put("identifiant", chauffeur.matricule);
 
                 if (!inscriptionChauffeur.getString("nom").equals("") &&
                         !inscriptionChauffeur.getString("prenom").equals("") &&
                         !inscriptionChauffeur.getString("telephone").equals("") &&
                         !inscriptionChauffeur.getString("nomUtilisateur").equals("") &&
                         !inscriptionChauffeur.getString("motDePasse").equals("") &&
-                        !inscriptionChauffeur.getString("matricule").equals(""))
+                        !inscriptionChauffeur.getString("identifiant").equals(""))
                     new MyAsyncTask().execute();
                 else
                     resulEnreg.setText("Un ou plusieurs champs vide!!!");
