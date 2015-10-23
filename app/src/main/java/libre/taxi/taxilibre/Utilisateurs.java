@@ -17,10 +17,9 @@ public class Utilisateurs  {
     String nom;
     String prenom;
     String telephone;
-    String nomUtilisateur;
     String motDePasse;
 
-    public Utilisateurs(String nom, String prenom, String telephone, String nomUtilisateur, String motDePasse) {
+    public Utilisateurs(String nom, String prenom, String telephone, String motDePasse) {
         if (telephone != null && telephone.length() == 10 && validerTelephone(telephone)) {
             this.telephone = telephone;
         } else {
@@ -35,11 +34,6 @@ public class Utilisateurs  {
             this.prenom = prenom;
         } else {
             this.prenom = "";
-        }
-        if (nomUtilisateur != null && Utilisateurs.estUneEntreeValide(nomUtilisateur)) {
-            this.nomUtilisateur = nomUtilisateur;
-        } else {
-            this.nomUtilisateur = "";
         }
         if (motDePasse != null && Utilisateurs.estUnMotDePasse(motDePasse)) {
             this.motDePasse = motDePasse;

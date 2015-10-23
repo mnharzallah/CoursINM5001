@@ -67,9 +67,6 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         textMatChauffeur = (EditText) findViewById(R.id.matriculeChauffeur);
         textMatChauffeur.addTextChangedListener(this);
 
-        textUtilChauffeur = (EditText) findViewById(R.id.utilChauffeur);
-        textUtilChauffeur.addTextChangedListener(this);
-
         textPasseChauffeur = (EditText) findViewById(R.id.passeChauffeur);
         textPasseChauffeur.addTextChangedListener(this);
 
@@ -86,25 +83,22 @@ public class InscChauffeurs extends Activity implements TextWatcher{
                 prenomChauffeur = textPrenomChauffeur.getText().toString();
                 telChauffeur = textTelChauffeur.getText().toString();
                 matriculeChauffeur = textMatChauffeur.getText().toString();
-                utilChauffeur = textUtilChauffeur.getText().toString();
                 passeChauffeur = textPasseChauffeur.getText().toString();
 
-                Chauffeurs chauffeur = new Chauffeurs(nomChauffeur, prenomChauffeur, telChauffeur, utilChauffeur,
+                Chauffeurs chauffeur = new Chauffeurs(nomChauffeur, prenomChauffeur, telChauffeur,
                         passeChauffeur, matriculeChauffeur);
                 inscriptionChauffeur.put("nom", chauffeur.nom);
                 inscriptionChauffeur.put("prenom", chauffeur.prenom);
                 inscriptionChauffeur.put("telephone", chauffeur.telephone);
                 inscriptionChauffeur.put("type", "chauffeur");
-                inscriptionChauffeur.put("nomUtilisateur", chauffeur.nomUtilisateur);
                 inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
-                inscriptionChauffeur.put("matricule", chauffeur.matricule);
+                inscriptionChauffeur.put("nomUtilisateur", chauffeur.matricule);
 
                 if (!inscriptionChauffeur.getString("nom").equals("") &&
                         !inscriptionChauffeur.getString("prenom").equals("") &&
                         !inscriptionChauffeur.getString("telephone").equals("") &&
-                        !inscriptionChauffeur.getString("nomUtilisateur").equals("") &&
                         !inscriptionChauffeur.getString("motDePasse").equals("") &&
-                        !inscriptionChauffeur.getString("matricule").equals(""))
+                        !inscriptionChauffeur.getString("nomUtilisateur").equals(""))
                     new MyAsyncTask().execute();
                 else
                     resulEnreg.setText("Un ou plusieurs champs vide!!!");
@@ -126,7 +120,6 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         textPrenomChauffeur.setError(null);
         textTelChauffeur.setError(null);
         textMatChauffeur.setError(null);
-        textUtilChauffeur.setError(null);
         textPasseChauffeur.setError(null);
     }
 
@@ -137,7 +130,6 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         textPrenomChauffeur.setError(null);
         textTelChauffeur.setError(null);
         textMatChauffeur.setError(null);
-        textUtilChauffeur.setError(null);
         textPasseChauffeur.setError(null);
     }
 
@@ -152,8 +144,6 @@ public class InscChauffeurs extends Activity implements TextWatcher{
             textTelChauffeur.setError("Veuillez entrer un numero de telephone valide");
         } else if (!Chauffeurs.validerMatricule(textMatChauffeur.getText().toString()) && s == textMatChauffeur.getEditableText()) {
             textMatChauffeur.setError("Veuillez entrer 10 chiffres");
-        } else if (!Utilisateurs.estUneEntreeValide(textUtilChauffeur.getText().toString()) && s == textUtilChauffeur.getEditableText()) {
-            textUtilChauffeur.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnMotDePasse(textPasseChauffeur.getText().toString()) && s == textPasseChauffeur.getEditableText()) {
             textPasseChauffeur.setError("Veuillez entrer entrer 4 et 8 caracteres");
         }

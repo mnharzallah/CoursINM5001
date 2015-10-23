@@ -27,12 +27,16 @@ public class ChauffeurGUI extends  Activity {
         retour = (Button) findViewById(R.id.retourInsc);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
+            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur")
+                    /*+ " " + Login.loginData.getString("nom")*/);
             Login.loginData.put("nomUtilisateur", "");
+            //Login.loginData.put("prenom", "");
         }
         else if (!InscChauffeurs.inscriptionChauffeur.isEmpty() && !InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur"));
+            bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur")
+                    /*+" " + InscChauffeurs.inscriptionChauffeur.getString("nom")*/);
             InscChauffeurs.inscriptionChauffeur.put("nomUtilisateur", "");
+            //InscChauffeurs.inscriptionChauffeur.put("prenom", "");
         }
 
         final Context context = this;

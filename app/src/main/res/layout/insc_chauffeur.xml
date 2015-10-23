@@ -65,19 +65,6 @@
         android:padding="8dp"
         android:background="@drawable/rounded_edittext"/>
     <EditText 
-        android:id="@+id/utilChauffeur"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textColorHint="#000000"
-        android:layout_marginTop="10dip"
-        android:hint="@string/utilChauffeur" 
-        android:textSize="20sp"
-        android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
-    <EditText 
         android:id="@+id/passeChauffeur"
         android:layout_width="300dp"
         android:layout_height="40dp"

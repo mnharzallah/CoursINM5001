@@ -16,8 +16,8 @@ public class Clients extends Utilisateurs {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
             Pattern.CASE_INSENSITIVE);
 
-    public Clients(String nom, String prenom, String telephone, String nomUtilisateur, String motDePasse, String courriel) {
-        super(nom, prenom, telephone, nomUtilisateur, motDePasse);
+    public Clients(String nom, String prenom, String telephone, String motDePasse, String courriel) {
+        super(nom, prenom, telephone, motDePasse);
         if (courriel != null && validerCourriel(courriel)) {
             this.courriel = courriel;
         } else {

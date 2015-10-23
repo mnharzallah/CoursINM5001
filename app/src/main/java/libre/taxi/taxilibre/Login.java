@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -23,22 +25,29 @@ import java.net.HttpURLConnection;
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  *
  * @author Mohamad
  */
-public class Login extends Activity {
+public class Login extends Activity implements TextWatcher {
 
     Button retour = null;
     Button login = null;
+
     EditText nomUtil = null;
     EditText motPasse = null;
-    String nomUtilisateur;
-    String motDePasse;
-    String typeChoisi = "";
     TextView resulEnr = null;
+
+    String nomUtilInput;
+    String motDePasse;
+    String typeChoisi = "client";
+
     static JSONObject loginData = new JSONObject();
     final Context context = this;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +60,16 @@ public class Login extends Activity {
         login = (Button) findViewById(R.id.authentication);
         final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                nomUtil = (EditText) findViewById(R.id.nomUtilisateur);
-                motPasse = (EditText) findViewById(R.id.motDePasse);
+        nomUtil = (EditText) findViewById(R.id.nomUtil);
+        nomUtil.addTextChangedListener(this);
+        motPasse = (EditText) findViewById(R.id.motDePasse);
 
-                nomUtilisateur = nomUtil.getText().toString();
+            login.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nomUtilInput = nomUtil.getText().toString();
+                loginData.put("nomUtilisateur", nomUtilInput);
+
                 motDePasse = motPasse.getText().toString();
-                loginData.put("nomUtilisateur", nomUtilisateur);
                 loginData.put("motDePasse", motDePasse);
 
                 if (!loginData.getString("nomUtilisateur").equals("") &&
@@ -89,12 +100,18 @@ public class Login extends Activity {
                 if (checked) 
                 {
                     typeChoisi = "client";
+                    nomUtil.setHint("Courriel");
+                    nomUtil.setError("");
+                    nomUtil.setText("");
                     break;
                 }
             case R.id.cocherChauffeur:
                 if (checked) 
                 {
                     typeChoisi = "chauffeur";
+                    nomUtil.setHint("Matricule");
+                    nomUtil.setError("");
+                    nomUtil.setText("");
                     break;
                 }
         }
@@ -164,5 +181,29 @@ public class Login extends Activity {
         System.out.println(response);
         System.out.println(urlConn.getResponseCode());
         return urlConn.getResponseCode();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after){
+        nomUtil.setError(null);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int count, int after) {
+        if (typeChoisi.equals("client")) {
+            if (!Utilisateurs.estUnCourrielValide(nomUtil.getText().toString()) && s == nomUtil.getEditableText()) {
+                nomUtil.setError("Veuillez entrer un courriel valide");
+            }
+        }else if (typeChoisi.equals("chauffeur"))
+        {
+            if (!Chauffeurs.validerMatricule(nomUtil.getText().toString()) && s == nomUtil.getEditableText()) {
+                nomUtil.setError("Veuillez une matricule de 10 chiffres");
+            }
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

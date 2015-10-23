@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cocherClient"
+            android:checked="true"
             android:onClick="onRadioButtonClicked"
             android:layout_weight="1"/>
         <RadioButton android:id="@+id/cocherChauffeur"
@@ -32,17 +33,17 @@
             android:layout_weight="1"/>
     </RadioGroup>
     <EditText 
-        android:id="@+id/nomUtilisateur"
+        android:id="@+id/nomUtil"
         android:layout_marginTop="20dip"
         android:layout_width="300dp"
         android:layout_height="30dp"
         android:textColor="#000000"
-        android:hint="@string/nomUtilisateur"
+        android:hint="Courriel"
         android:textColorHint="#000000"
         android:layout_marginLeft="10dp"
         android:background="@drawable/rounded_edittext"
         android:gravity="center"/>
-    <EditText 
+    <EditText
         android:id="@+id/motDePasse"
         android:layout_width="300dp"
         android:layout_height="30dp"

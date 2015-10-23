@@ -27,7 +27,6 @@ public class InscClients extends Activity implements TextWatcher {
 
     private EditText textNomClient;
     private EditText textPrenomClient;
-    private EditText textUtilClient;
     private EditText textPasseClient;
     private EditText textTelClient;
     private EditText textCourriel;
@@ -35,7 +34,6 @@ public class InscClients extends Activity implements TextWatcher {
     String nomClient;
     String prenomClient;
     String telClient;
-    String utilClient;
     String passeClient;
     String courriel;
     Button retourInsc = null;
@@ -66,9 +64,6 @@ public class InscClients extends Activity implements TextWatcher {
         textCourriel = (EditText) findViewById(R.id.courriel);
         textCourriel.addTextChangedListener(this);
 
-        textUtilClient = (EditText) findViewById(R.id.utilClient);
-        textUtilClient.addTextChangedListener(this);
-
         textPasseClient = (EditText) findViewById(R.id.passeClient);
         textPasseClient.addTextChangedListener(this);
 
@@ -77,31 +72,25 @@ public class InscClients extends Activity implements TextWatcher {
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                java.sql.Connection conn = null;
-                java.sql.PreparedStatement stmt = null;
 
                 nomClient = textNomClient.getText().toString();
                 prenomClient = textPrenomClient.getText().toString();
                 telClient = textTelClient.getText().toString();
                 courriel = textCourriel.getText().toString();
-                utilClient = textUtilClient.getText().toString();
                 passeClient = textPasseClient.getText().toString();
 
-                Clients client = new Clients(nomClient, prenomClient, telClient, utilClient, passeClient, courriel);
+                Clients client = new Clients(nomClient, prenomClient, telClient, passeClient, courriel);
                 inscriptionClient.put("nom", client.nom);
                 inscriptionClient.put("prenom", client.prenom);
                 inscriptionClient.put("telephone", client.telephone);
                 inscriptionClient.put("type", "client");
-                inscriptionClient.put("nomUtilisateur", client.nomUtilisateur);
                 inscriptionClient.put("motDePasse", client.motDePasse);
-                inscriptionClient.put("courriel", client.courriel);
+                inscriptionClient.put("nomUtilisateur", client.courriel);
                 if (!inscriptionClient.getString("nom").equals("") &&
                         !inscriptionClient.getString("prenom").equals("") &&
                         !inscriptionClient.getString("telephone").equals("") &&
-                        !inscriptionClient.getString("nomUtilisateur").equals("") &&
                         !inscriptionClient.getString("motDePasse").equals("") &&
-                        !inscriptionClient.getString("courriel").equals(""))
+                        !inscriptionClient.getString("nomUtilisateur").equals(""))
                 new MyAsyncTask().execute();
                 else
                     resulEnreg.setText("Un ou plusieurs champs vide!!!");
@@ -123,7 +112,6 @@ public class InscClients extends Activity implements TextWatcher {
         textPrenomClient.setError(null);
         textTelClient.setError(null);
         textCourriel.setError(null);
-        textUtilClient.setError(null);
         textPasseClient.setError(null);
     }
 
@@ -137,8 +125,6 @@ public class InscClients extends Activity implements TextWatcher {
             textTelClient.setError("Veuillez entrer un numero de telephone valide");
         } else if (!Utilisateurs.estUnCourrielValide(textCourriel.getText().toString()) && s == textCourriel.getEditableText()) {
             textCourriel.setError("Veuillez entrer une addresse courriel valide");
-        } else if (!Utilisateurs.estUneEntreeValide(textUtilClient.getText().toString()) && s == textUtilClient.getEditableText()) {
-            textUtilClient.setError("Veuillez entrer au moins 2 caracteres");
         } else if (!Utilisateurs.estUnMotDePasse(textPasseClient.getText().toString()) && s == textPasseClient.getEditableText()) {
             textPasseClient.setError("Veuillez entrez un mot de passe entre 4 et 8 caracteres");
         }

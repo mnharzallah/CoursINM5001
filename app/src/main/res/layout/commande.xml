@@ -12,20 +12,55 @@
         android:textColor="#D8D8D8"
         android:textSize="20sp"
         android:layout_marginTop="20dp"/>
-    <Button 
+    <Button
         android:id="@+id/commande"
-        android:layout_width="300dp"
+        android:layout_width="380dp"
         android:layout_height="50dp"
-        android:textSize="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="150dip"
-        android:text="@string/commandeText"
-        android:background="@drawable/rounded_button"/>
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dip"
+        android:text="@string/commandeText" />
+    <fragment
+        android:layout_marginTop="10dp"
+        android:id="@+id/googleMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/latlongLocation" />
+    <TextView
+        android:id="@+id/latlongLocation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:background="#000000"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#ffffffff"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#D8D8D8"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/resultat"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dip"
+        android:textColor="#8A0808"
+        android:layout_marginTop="10dp"/>
     <Button 
         android:id="@+id/retourInsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dip"
+        android:layout_marginTop="55dip"
         android:text="@string/retourInsc"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>

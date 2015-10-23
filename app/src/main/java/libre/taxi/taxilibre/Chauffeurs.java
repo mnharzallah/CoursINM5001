@@ -11,8 +11,8 @@ public class Chauffeurs extends Utilisateurs {
 
     String matricule;
 
-    public Chauffeurs(String nom, String prenom, String telephone, String nomUtilisateur, String motDePasse, String matricule) {
-        super(nom, prenom, telephone, nomUtilisateur, motDePasse);
+    public Chauffeurs(String nom, String prenom, String telephone, String motDePasse, String matricule) {
+        super(nom, prenom, telephone, motDePasse);
         if (validerMatricule(matricule))
             this.matricule = matricule;
         else
