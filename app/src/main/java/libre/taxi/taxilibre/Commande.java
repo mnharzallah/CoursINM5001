@@ -47,9 +47,10 @@ public class Commande extends FragmentActivity implements
     Button commander = null;
     Button retour = null;
     static JSONObject commanderCh = new JSONObject();
-    Double longitude;
-    Double latitude;
+    Double longitude = -73.56849;
+    Double latitude = 45.50866;
     TextView result = null;
+    Context context = this;
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 10;
@@ -59,6 +60,7 @@ public class Commande extends FragmentActivity implements
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     String courrielClient;
+    String motDePasse;
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -74,6 +76,8 @@ public class Commande extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
+        commanderCh.put("longitude", -73.56849);
+        commanderCh.put("latitude", 45.50866);
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =
@@ -102,12 +106,14 @@ public class Commande extends FragmentActivity implements
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur")
                     /*+ " "+ Login.loginData.getString("prenom")*/);
             courrielClient = Login.loginData.getString("nomUtilisateur");
+            motDePasse = Login.loginData.getString("motDePasse");
             Login.loginData.put("nomUtilisateur", "");
             //Login.loginData.put("prenom", "");
         } else if (!InscClients.inscriptionClient.isEmpty() && !InscClients.inscriptionClient.getString("nomUtilisateur").equals("")) {
             bienvenue.setText("Bienvenue " + InscClients.inscriptionClient.getString("nomUtilisateur")
                     /*+" " + InscClients.inscriptionClient.getString("prenom")*/);
             courrielClient = InscClients.inscriptionClient.getString("nomUtilisateur");
+            motDePasse = InscClients.inscriptionClient.getString("motDePasse");
             InscClients.inscriptionClient.put("nomUtilisateur", "");
             //InscClients.inscriptionClient.put("prenom", "");
         }
@@ -130,11 +136,12 @@ public class Commande extends FragmentActivity implements
             public void onClick(View arg0) {
 
                 commanderCh.put("nomUtilisateur", courrielClient);
+                commanderCh.put("motDePasse", motDePasse);
                 if (!commanderCh.getString("nomUtilisateur").equals("") &&
+                        !commanderCh.getString("motDePasse").equals("") &&
                         !commanderCh.getString("latitude").equals("") &&
                         !commanderCh.getString("longitude").equals("")) {
                     new MyAsyncTask().execute();
-                    result.setText("Commande envoyee!!!");
                 }
                 else
                     result.setText("Position non disponible!!!");
@@ -228,17 +235,22 @@ public class Commande extends FragmentActivity implements
 
         @Override
         protected void onPostExecute(Integer result) {
-
+            TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+            if (result == 200) {
+                resulEnreg.setText("Commande Envoyee");
+            }else{
+                resulEnreg.setText("Commande n'est pas envoyee!!!!");
+            }
         }
     }
 
-    public int postData(JSONObject inscriptionClient) throws IOException {
+    public int postData(JSONObject commanderCh) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
+        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/commande");
         urlConn = (HttpURLConnection) url.openConnection();
 
         urlConn.setDoInput (true);
@@ -250,8 +262,8 @@ public class Commande extends FragmentActivity implements
 
         // Send POST output.
         OutputStream os = urlConn.getOutputStream();
-        os.write(inscriptionClient.toString().getBytes());
-        System.out.println(inscriptionClient.toString());
+        os.write(commanderCh.toString().getBytes());
+        System.out.println(commanderCh.toString());
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("OK");
