@@ -22,7 +22,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -51,15 +50,17 @@ public class ChauffeurGUI extends FragmentActivity implements
     TextView result = null;
 
     private static final String TAG = "LocationActivity";
-    private static final long INTERVAL = 1000 * 10;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
+    private static final long INTERVAL = 60000;
+    private static final long FASTEST_INTERVAL = 60000;
     TextView location;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     String matriculeChauffeur;
+    String motDePasseChauffeur;
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
+        mLocationRequest.setSmallestDisplacement(30);
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -99,6 +100,7 @@ public class ChauffeurGUI extends FragmentActivity implements
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur")
                     /*+ " " + Login.loginData.getString("nom")*/);
             matriculeChauffeur = Login.loginData.getString("nomUtilisateur");
+            motDePasseChauffeur = Login.loginData.getString("motDePasse");
             Login.loginData.put("nomUtilisateur", "");
             //Login.loginData.put("prenom", "");
         }
@@ -106,6 +108,7 @@ public class ChauffeurGUI extends FragmentActivity implements
             bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur")
                     /*+" " + InscChauffeurs.inscriptionChauffeur.getString("nom")*/);
             matriculeChauffeur = InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur");
+            motDePasseChauffeur = InscChauffeurs.inscriptionChauffeur.getString("motDePasse");
             InscChauffeurs.inscriptionChauffeur.put("nomUtilisateur", "");
             //InscChauffeurs.inscriptionChauffeur.put("prenom", "");
         }
@@ -184,8 +187,10 @@ public class ChauffeurGUI extends FragmentActivity implements
         longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         positionAjour.put("nomUtilisateur", matriculeChauffeur);
+        positionAjour.put("motDePasse", motDePasseChauffeur);
         positionAjour.put("longitude", longitude);
         positionAjour.put("latitude", latitude);
+        positionAjour.put("disponible", "Y");
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -219,33 +224,28 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         URL url = null;
         HttpURLConnection urlConn = null;
-        DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
+        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/chauffeur");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        urlConn.setDoInput (true);
+        urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         urlConn.setRequestProperty("Accept", "application/json");
-        urlConn.setRequestMethod("POST");
+        urlConn.setRequestMethod("PUT");
 
         // Send POST output.
         OutputStream os = urlConn.getOutputStream();
         os.write(positionAjour.toString().getBytes());
         System.out.println(positionAjour.toString());
 
-        if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            System.out.println("OK");
+        if (urlConn.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED) {
+            System.out.println("J'ai reçu la mise à jour!");
         } else {
             System.out.println(urlConn.getResponseCode());
         }
 
-        input = new DataInputStream(urlConn.getInputStream());
-        String  response = Utilisateurs.convertStreamToString(input);
-        System.out.println(response);
-        System.out.println("SEND\n");
         return urlConn.getResponseCode();
     }
 }
