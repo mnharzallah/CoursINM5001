@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class ChauffeurGUI extends FragmentActivity implements
     Double longitude;
     Double latitude;
     TextView result = null;
+    protected PowerManager.WakeLock mWakeLock;
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 60000;
@@ -73,6 +75,12 @@ public class ChauffeurGUI extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
+
+        /* This code together with the one in onDestroy()
+         * will make the screen be always on until this Activity gets destroyed. */
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =
@@ -130,6 +138,12 @@ public class ChauffeurGUI extends FragmentActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(context, TaxiLibre.class);
                 startActivity(intent);
+                positionAjour.put("nomUtilisateur", matriculeChauffeur);
+                positionAjour.put("motDePasse", motDePasseChauffeur);
+                positionAjour.put("longitude", 0.0);
+                positionAjour.put("latitude", 0.0);
+                positionAjour.put("disponible", "N");
+                new MyAsyncTask().execute();
             }
         });
     }
@@ -147,6 +161,12 @@ public class ChauffeurGUI extends FragmentActivity implements
         Log.d(TAG, "onStop fired ..............");
         mGoogleApiClient.disconnect();
         Log.d(TAG, "isConnected ...............: " + mGoogleApiClient.isConnected());
+        positionAjour.put("nomUtilisateur", matriculeChauffeur);
+        positionAjour.put("motDePasse", motDePasseChauffeur);
+        positionAjour.put("longitude", 0.0);
+        positionAjour.put("latitude", 0.0);
+        positionAjour.put("disponible", "N");
+        new MyAsyncTask().execute();
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -247,5 +267,11 @@ public class ChauffeurGUI extends FragmentActivity implements
         }
 
         return urlConn.getResponseCode();
+    }
+
+    @Override
+    public void onDestroy() {
+        this.mWakeLock.release();
+        super.onDestroy();
     }
 }
