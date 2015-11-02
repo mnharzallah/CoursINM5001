@@ -103,19 +103,15 @@ public class Commande extends FragmentActivity implements
         retour = (Button) findViewById(R.id.retourInsc);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur")
-                    /*+ " "+ Login.loginData.getString("prenom")*/);
+            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
             courrielClient = Login.loginData.getString("nomUtilisateur");
             motDePasse = Login.loginData.getString("motDePasse");
             Login.loginData.put("nomUtilisateur", "");
-            //Login.loginData.put("prenom", "");
         } else if (!InscClients.inscriptionClient.isEmpty() && !InscClients.inscriptionClient.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + InscClients.inscriptionClient.getString("nomUtilisateur")
-                    /*+" " + InscClients.inscriptionClient.getString("prenom")*/);
+            bienvenue.setText("Bienvenue " + InscClients.inscriptionClient.getString("nomUtilisateur"));
             courrielClient = InscClients.inscriptionClient.getString("nomUtilisateur");
             motDePasse = InscClients.inscriptionClient.getString("motDePasse");
             InscClients.inscriptionClient.put("nomUtilisateur", "");
-            //InscClients.inscriptionClient.put("prenom", "");
         }
 
         Log.d(TAG, "onCreate ...............................");
@@ -217,12 +213,12 @@ public class Commande extends FragmentActivity implements
         locationTv.setText("Latitude:" + latitude + ", Longitude:" + longitude);
     }
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             // TODO Auto-generated method stub
-            int result = 0;
+            String result = "";
             try {
                 result = postData(commanderCh);
             } catch (UnsupportedEncodingException e) {
@@ -234,17 +230,13 @@ public class Commande extends FragmentActivity implements
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(String result) {
             TextView resulEnreg = (TextView) findViewById(R.id.resultat);
-            if (result == 200) {
-                resulEnreg.setText("Commande Envoyee");
-            }else{
-                resulEnreg.setText("Commande n'est pas envoyee!!!!");
-            }
+            resulEnreg.setText(result.substring(result.indexOf("|") + 1, result.length() - 1));
         }
     }
 
-    public int postData(JSONObject commanderCh) throws IOException {
+    public String postData(JSONObject commanderCh) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
@@ -274,6 +266,6 @@ public class Commande extends FragmentActivity implements
         input = new DataInputStream(urlConn.getInputStream());
         String  response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
-        return urlConn.getResponseCode();
+        return urlConn.getResponseCode() + "|" + response;
     }
 }

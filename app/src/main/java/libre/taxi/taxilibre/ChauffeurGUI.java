@@ -1,6 +1,7 @@
 package libre.taxi.taxilibre;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,8 +10,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.location.Location;
@@ -105,20 +109,16 @@ public class ChauffeurGUI extends FragmentActivity implements
         retour = (Button) findViewById(R.id.retourInsc);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur")
-                    /*+ " " + Login.loginData.getString("nom")*/);
+            bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
             matriculeChauffeur = Login.loginData.getString("nomUtilisateur");
             motDePasseChauffeur = Login.loginData.getString("motDePasse");
             Login.loginData.put("nomUtilisateur", "");
-            //Login.loginData.put("prenom", "");
         }
         else if (!InscChauffeurs.inscriptionChauffeur.isEmpty() && !InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur").equals("")) {
-            bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur")
-                    /*+" " + InscChauffeurs.inscriptionChauffeur.getString("nom")*/);
+            bienvenue.setText("Bienvenue " + InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur"));
             matriculeChauffeur = InscChauffeurs.inscriptionChauffeur.getString("nomUtilisateur");
             motDePasseChauffeur = InscChauffeurs.inscriptionChauffeur.getString("motDePasse");
             InscChauffeurs.inscriptionChauffeur.put("nomUtilisateur", "");
-            //InscChauffeurs.inscriptionChauffeur.put("prenom", "");
         }
 
         Log.d(TAG, "onCreate ...............................");
@@ -236,7 +236,15 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         @Override
         protected void onPostExecute(Integer result) {
-
+            TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+            if (result == 202) {
+                resulEnreg.setText("");
+                resulEnreg.setText("Position a jour");
+            }
+            else {
+                resulEnreg.setText("Position non disponible!!");
+                resulEnreg.setText("");
+            }
         }
     }
 

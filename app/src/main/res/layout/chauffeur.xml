@@ -44,15 +44,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginLeft="20dip"
-        android:textColor="#8A0808"
-        android:layout_marginTop="10dp"/>
+        android:textSize="10sp"
+        android:layout_marginLeft="10dip"
+        android:textColor="#2EFEF7" />
     <Button
         android:id="@+id/retourInsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dip"
+        android:layout_marginTop="180dip"
         android:text="@string/retourInsc"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>
