@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,13 +16,16 @@ import android.widget.RadioButton;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import net.sf.json.JSONObject;
+
 import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
+
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,7 +33,6 @@ import android.graphics.drawable.ColorDrawable;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- *
  * @author Mohamad
  */
 public class Login extends Activity implements TextWatcher {
@@ -64,20 +67,23 @@ public class Login extends Activity implements TextWatcher {
         nomUtil.addTextChangedListener(this);
         motPasse = (EditText) findViewById(R.id.motDePasse);
 
-            login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                nomUtilInput = nomUtil.getText().toString();
-                loginData.put("nomUtilisateur", nomUtilInput);
+                if (Utilisateurs.isOnline(context)) {
+                    nomUtilInput = nomUtil.getText().toString();
+                    loginData.put("nomUtilisateur", nomUtilInput);
 
-                motDePasse = motPasse.getText().toString();
-                loginData.put("motDePasse", motDePasse);
+                    motDePasse = motPasse.getText().toString();
+                    loginData.put("motDePasse", motDePasse);
 
-                if (!loginData.getString("nomUtilisateur").equals("") &&
-                        !loginData.getString("motDePasse").equals("") &&
-                        (typeChoisi.equals("client") || typeChoisi.equals("chauffeur")))
-                new MyAsyncTask().execute();
-                else
-                resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                    if (!loginData.getString("nomUtilisateur").equals("") &&
+                            !loginData.getString("motDePasse").equals("") &&
+                            (typeChoisi.equals("client") || typeChoisi.equals("chauffeur")))
+                        new MyAsyncTask().execute();
+                    else
+                        resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                } else
+                    resulEnreg.setText("Verifier votre connexion internet!!!");
             }
         });
 
@@ -97,8 +103,7 @@ public class Login extends Activity implements TextWatcher {
         // Check which radio button was clicked
         switch (view.getId()) {
             case R.id.cocherClient:
-                if (checked) 
-                {
+                if (checked) {
                     typeChoisi = "client";
                     nomUtil.setHint("Courriel");
                     nomUtil.setError("");
@@ -106,8 +111,7 @@ public class Login extends Activity implements TextWatcher {
                     break;
                 }
             case R.id.cocherChauffeur:
-                if (checked) 
-                {
+                if (checked) {
                     typeChoisi = "chauffeur";
                     nomUtil.setHint("Matricule");
                     nomUtil.setError("");
@@ -142,7 +146,7 @@ public class Login extends Activity implements TextWatcher {
                     Intent intent = new Intent(context, ChauffeurGUI.class);
                     startActivity(intent);
                 }
-            }else{
+            } else {
                 TextView resulEnreg = (TextView) findViewById(R.id.resultat);
                 resulEnreg.setText("Nom d'utilisateur n'existe pas!!!!");
             }
@@ -155,10 +159,10 @@ public class Login extends Activity implements TextWatcher {
         HttpURLConnection urlConn = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/login");
+        url = new URL("http://libretaxi-env.elasticbeanstalk.com/login");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        urlConn.setDoInput (true);
+        urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -177,14 +181,14 @@ public class Login extends Activity implements TextWatcher {
         }
 
         input = new DataInputStream(urlConn.getInputStream());
-        String  response = Utilisateurs.convertStreamToString(input);
+        String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         System.out.println(urlConn.getResponseCode());
         return urlConn.getResponseCode();
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after){
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         nomUtil.setError(null);
     }
 
@@ -194,8 +198,7 @@ public class Login extends Activity implements TextWatcher {
             if (!Utilisateurs.estUnCourrielValide(nomUtil.getText().toString()) && s == nomUtil.getEditableText()) {
                 nomUtil.setError("Veuillez entrer un courriel valide");
             }
-        }else if (typeChoisi.equals("chauffeur"))
-        {
+        } else if (typeChoisi.equals("chauffeur")) {
             if (!Chauffeurs.validerMatricule(nomUtil.getText().toString()) && s == nomUtil.getEditableText()) {
                 nomUtil.setError("Veuillez une matricule de 10 chiffres");
             }

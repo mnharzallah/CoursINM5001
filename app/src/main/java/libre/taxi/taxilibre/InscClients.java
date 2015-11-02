@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import net.sf.json.JSONObject;
+
 import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -72,28 +74,30 @@ public class InscClients extends Activity implements TextWatcher {
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (Utilisateurs.isOnline(context)) {
+                    nomClient = textNomClient.getText().toString();
+                    prenomClient = textPrenomClient.getText().toString();
+                    telClient = textTelClient.getText().toString();
+                    courriel = textCourriel.getText().toString();
+                    passeClient = textPasseClient.getText().toString();
 
-                nomClient = textNomClient.getText().toString();
-                prenomClient = textPrenomClient.getText().toString();
-                telClient = textTelClient.getText().toString();
-                courriel = textCourriel.getText().toString();
-                passeClient = textPasseClient.getText().toString();
-
-                Clients client = new Clients(nomClient, prenomClient, telClient, passeClient, courriel);
-                inscriptionClient.put("nom", client.nom);
-                inscriptionClient.put("prenom", client.prenom);
-                inscriptionClient.put("telephone", client.telephone);
-                inscriptionClient.put("type", "client");
-                inscriptionClient.put("motDePasse", client.motDePasse);
-                inscriptionClient.put("nomUtilisateur", client.courriel);
-                if (!inscriptionClient.getString("nom").equals("") &&
-                        !inscriptionClient.getString("prenom").equals("") &&
-                        !inscriptionClient.getString("telephone").equals("") &&
-                        !inscriptionClient.getString("motDePasse").equals("") &&
-                        !inscriptionClient.getString("nomUtilisateur").equals(""))
-                new MyAsyncTask().execute();
-                else
-                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                    Clients client = new Clients(nomClient, prenomClient, telClient, passeClient, courriel);
+                    inscriptionClient.put("nom", client.nom);
+                    inscriptionClient.put("prenom", client.prenom);
+                    inscriptionClient.put("telephone", client.telephone);
+                    inscriptionClient.put("type", "client");
+                    inscriptionClient.put("motDePasse", client.motDePasse);
+                    inscriptionClient.put("nomUtilisateur", client.courriel);
+                    if (!inscriptionClient.getString("nom").equals("") &&
+                            !inscriptionClient.getString("prenom").equals("") &&
+                            !inscriptionClient.getString("telephone").equals("") &&
+                            !inscriptionClient.getString("motDePasse").equals("") &&
+                            !inscriptionClient.getString("nomUtilisateur").equals(""))
+                        new MyAsyncTask().execute();
+                    else
+                        resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                } else
+                    resulEnreg.setText("Verifier votre connexion internet!!!");
             }
         });
 
@@ -107,7 +111,7 @@ public class InscClients extends Activity implements TextWatcher {
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after){
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         textNomClient.setError(null);
         textPrenomClient.setError(null);
         textTelClient.setError(null);
@@ -131,7 +135,7 @@ public class InscClients extends Activity implements TextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s){
+    public void afterTextChanged(Editable s) {
 
     }
 
@@ -156,7 +160,7 @@ public class InscClients extends Activity implements TextWatcher {
             if (result == 201) {
                 Intent intent = new Intent(context, Commande.class);
                 startActivity(intent);
-            }else{
+            } else {
                 TextView resulEnreg = (TextView) findViewById(R.id.resultat);
                 resulEnreg.setText("Nom d'utilisateur existe!!!!");
             }
@@ -169,10 +173,10 @@ public class InscClients extends Activity implements TextWatcher {
         HttpURLConnection urlConn = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
+        url = new URL("http://libretaxi-env.elasticbeanstalk.com/");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        urlConn.setDoInput (true);
+        urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -191,7 +195,7 @@ public class InscClients extends Activity implements TextWatcher {
         }
 
         input = new DataInputStream(urlConn.getInputStream());
-        String  response = Utilisateurs.convertStreamToString(input);
+        String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         return urlConn.getResponseCode();
     }

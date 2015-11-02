@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.location.Location;
 import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,19 +23,23 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import android.location.Criteria;
 import android.location.LocationManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import net.sf.json.JSONObject;
 
 public class Commande extends FragmentActivity implements
@@ -130,17 +135,18 @@ public class Commande extends FragmentActivity implements
         btnFusedLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
-                commanderCh.put("nomUtilisateur", courrielClient);
-                commanderCh.put("motDePasse", motDePasse);
-                if (!commanderCh.getString("nomUtilisateur").equals("") &&
-                        !commanderCh.getString("motDePasse").equals("") &&
-                        !commanderCh.getString("latitude").equals("") &&
-                        !commanderCh.getString("longitude").equals("")) {
-                    new MyAsyncTask().execute();
-                }
-                else
-                    result.setText("Position non disponible!!!");
+                if (Utilisateurs.isOnline(context)) {
+                    commanderCh.put("nomUtilisateur", courrielClient);
+                    commanderCh.put("motDePasse", motDePasse);
+                    if (!commanderCh.getString("nomUtilisateur").equals("") &&
+                            !commanderCh.getString("motDePasse").equals("") &&
+                            !commanderCh.getString("latitude").equals("") &&
+                            !commanderCh.getString("longitude").equals("")) {
+                        new MyAsyncTask().execute();
+                    } else
+                        result.setText("Position non disponible!!!");
+                } else
+                    result.setText("Verifier votre connexion internet!!!");
             }
         });
 
@@ -242,10 +248,10 @@ public class Commande extends FragmentActivity implements
         HttpURLConnection urlConn = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/commande");
+        url = new URL("http://libretaxi-env.elasticbeanstalk.com/commande");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        urlConn.setDoInput (true);
+        urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -264,7 +270,7 @@ public class Commande extends FragmentActivity implements
         }
 
         input = new DataInputStream(urlConn.getInputStream());
-        String  response = Utilisateurs.convertStreamToString(input);
+        String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         return urlConn.getResponseCode() + "|" + response;
     }

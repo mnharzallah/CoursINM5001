@@ -51,6 +51,7 @@ public class ChauffeurGUI extends FragmentActivity implements
     Double latitude;
     TextView result = null;
     protected PowerManager.WakeLock mWakeLock;
+    Context context = this;
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 60000;
@@ -240,12 +241,14 @@ public class ChauffeurGUI extends FragmentActivity implements
             Calendar cal=Calendar.getInstance();
             cal.setTimeInMillis(currentTime);
             String showTime=String.format("%1$tI:%1$tM:%1$tS %1$Tp",cal);//shows time in format 10:30:45 am
-
             if (result == 202) {
                 resulEnreg.setText("Derniere mise a jour de Position" + " " + showTime);
             }
             else {
-                resulEnreg.setText("Position non disponible!!");
+                if (Utilisateurs.isOnline(context))
+                    resulEnreg.setText("Position non disponible!!!");
+                else
+                    resulEnreg.setText("Verifier votre connexion internet!!!");
             }
             resulEnreg.setVisibility(View.VISIBLE);
             resulEnreg.postDelayed(new Runnable() {

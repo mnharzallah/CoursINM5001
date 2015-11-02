@@ -3,11 +3,17 @@
  */
 package libre.taxi.taxilibre;
 
+import android.app.Activity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.InputStream;
 
+import android.app.Application;
+import android.net.ConnectivityManager;
+import android.content.Context;
+import android.net.NetworkInfo;
 /**
  *
  * @author Mohamad
@@ -91,5 +97,12 @@ public class Utilisateurs  {
             }
         }
         return sb.toString();
+    }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

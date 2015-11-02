@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import net.sf.json.JSONObject;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,7 +25,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 
 
-public class InscChauffeurs extends Activity implements TextWatcher{
+public class InscChauffeurs extends Activity implements TextWatcher {
 
     private EditText textNomChauffeur;
     private EditText textPrenomChauffeur;
@@ -75,33 +77,32 @@ public class InscChauffeurs extends Activity implements TextWatcher{
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                java.sql.Connection conn = null;
-                java.sql.PreparedStatement stmt = null;
+                if (Utilisateurs.isOnline(context)) {
+                    nomChauffeur = textNomChauffeur.getText().toString();
+                    prenomChauffeur = textPrenomChauffeur.getText().toString();
+                    telChauffeur = textTelChauffeur.getText().toString();
+                    matriculeChauffeur = textMatChauffeur.getText().toString();
+                    passeChauffeur = textPasseChauffeur.getText().toString();
 
-                nomChauffeur = textNomChauffeur.getText().toString();
-                prenomChauffeur = textPrenomChauffeur.getText().toString();
-                telChauffeur = textTelChauffeur.getText().toString();
-                matriculeChauffeur = textMatChauffeur.getText().toString();
-                passeChauffeur = textPasseChauffeur.getText().toString();
+                    Chauffeurs chauffeur = new Chauffeurs(nomChauffeur, prenomChauffeur, telChauffeur,
+                            passeChauffeur, matriculeChauffeur);
+                    inscriptionChauffeur.put("nom", chauffeur.nom);
+                    inscriptionChauffeur.put("prenom", chauffeur.prenom);
+                    inscriptionChauffeur.put("telephone", chauffeur.telephone);
+                    inscriptionChauffeur.put("type", "chauffeur");
+                    inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
+                    inscriptionChauffeur.put("nomUtilisateur", chauffeur.matricule);
 
-                Chauffeurs chauffeur = new Chauffeurs(nomChauffeur, prenomChauffeur, telChauffeur,
-                        passeChauffeur, matriculeChauffeur);
-                inscriptionChauffeur.put("nom", chauffeur.nom);
-                inscriptionChauffeur.put("prenom", chauffeur.prenom);
-                inscriptionChauffeur.put("telephone", chauffeur.telephone);
-                inscriptionChauffeur.put("type", "chauffeur");
-                inscriptionChauffeur.put("motDePasse", chauffeur.motDePasse);
-                inscriptionChauffeur.put("nomUtilisateur", chauffeur.matricule);
-
-                if (!inscriptionChauffeur.getString("nom").equals("") &&
-                        !inscriptionChauffeur.getString("prenom").equals("") &&
-                        !inscriptionChauffeur.getString("telephone").equals("") &&
-                        !inscriptionChauffeur.getString("motDePasse").equals("") &&
-                        !inscriptionChauffeur.getString("nomUtilisateur").equals(""))
-                    new MyAsyncTask().execute();
-                else
-                    resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                    if (!inscriptionChauffeur.getString("nom").equals("") &&
+                            !inscriptionChauffeur.getString("prenom").equals("") &&
+                            !inscriptionChauffeur.getString("telephone").equals("") &&
+                            !inscriptionChauffeur.getString("motDePasse").equals("") &&
+                            !inscriptionChauffeur.getString("nomUtilisateur").equals(""))
+                        new MyAsyncTask().execute();
+                    else
+                        resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                } else
+                    resulEnreg.setText("Verifier votre connexion internet!!!");
             }
         });
 
@@ -115,7 +116,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after){
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         textNomChauffeur.setError(null);
         textPrenomChauffeur.setError(null);
         textTelChauffeur.setError(null);
@@ -124,7 +125,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count){
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
         textNomChauffeur.setError(null);
         textPrenomChauffeur.setError(null);
@@ -148,6 +149,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
             textPasseChauffeur.setError("Veuillez entrer entrer 4 et 8 caracteres");
         }
     }
+
     private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
@@ -168,7 +170,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
             if (result == 201) {
                 Intent intent = new Intent(context, ChauffeurGUI.class);
                 startActivity(intent);
-            }else{
+            } else {
                 TextView resulEnreg = (TextView) findViewById(R.id.resultat);
                 resulEnreg.setText("Nom d'utilisateur existe!!!!");
             }
@@ -181,10 +183,10 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         HttpURLConnection urlConn = null;
         DataInputStream input;
 
-        url = new URL ("http://libretaxi-env.elasticbeanstalk.com/");
+        url = new URL("http://libretaxi-env.elasticbeanstalk.com/");
         urlConn = (HttpURLConnection) url.openConnection();
 
-        urlConn.setDoInput (true);
+        urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -203,7 +205,7 @@ public class InscChauffeurs extends Activity implements TextWatcher{
         }
 
         input = new DataInputStream(urlConn.getInputStream());
-        String  response = Utilisateurs.convertStreamToString(input);
+        String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         return urlConn.getResponseCode();
     }
