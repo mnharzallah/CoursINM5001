@@ -60,7 +60,7 @@ public class Utilisateurs  {
     }
 
     public static boolean estUnMotDePasse(String motDePasse){
-        return motDePasse.matches("[A-Za-z1-9]{4}|[A-Za-z1-9]{8}");
+        return motDePasse.matches("[A-Za-z1-9]{4,8}");
     }
 
     public static boolean estUnNumeroDeTelValide(String tel){
