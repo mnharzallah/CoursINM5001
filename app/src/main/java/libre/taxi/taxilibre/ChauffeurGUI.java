@@ -1,7 +1,6 @@
 package libre.taxi.taxilibre;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,11 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.location.Location;
@@ -32,6 +28,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 import android.location.Criteria;
 import android.location.LocationManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -236,15 +233,26 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         @Override
         protected void onPostExecute(Integer result) {
-            TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+            final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
+
+            long currentTime=System.currentTimeMillis(); //getting current time in millis
+            //converting it into user readable format
+            Calendar cal=Calendar.getInstance();
+            cal.setTimeInMillis(currentTime);
+            String showTime=String.format("%1$tI:%1$tM:%1$tS %1$Tp",cal);//shows time in format 10:30:45 am
+
             if (result == 202) {
-                resulEnreg.setText("");
-                resulEnreg.setText("Position a jour");
+                resulEnreg.setText("Derniere mise a jour de Position" + " " + showTime);
             }
             else {
                 resulEnreg.setText("Position non disponible!!");
-                resulEnreg.setText("");
             }
+            resulEnreg.setVisibility(View.VISIBLE);
+            resulEnreg.postDelayed(new Runnable() {
+                public void run() {
+                    resulEnreg.setVisibility(View.INVISIBLE);
+                }
+            }, 7000);
         }
     }
 
