@@ -1,6 +1,7 @@
 package libre.taxi.taxilibre;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -88,7 +89,7 @@ public class Commande extends FragmentActivity implements
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
         ViewGroup.LayoutParams params = supportMapFragment.getView().getLayoutParams();
-        params.height = 540;
+        params.height = 440;
         supportMapFragment.getView().setLayoutParams(params);
 
         googleMap = supportMapFragment.getMap();
@@ -105,7 +106,7 @@ public class Commande extends FragmentActivity implements
         bienvenue = (TextView) findViewById(R.id.bienvenue);
         commander = (Button) findViewById(R.id.commande);
         location = (TextView) findViewById(R.id.location);
-        retour = (Button) findViewById(R.id.retourInsc);
+        retour = (Button) findViewById(R.id.deconnecter);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
@@ -155,6 +156,7 @@ public class Commande extends FragmentActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(context, TaxiLibre.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -273,5 +275,13 @@ public class Commande extends FragmentActivity implements
         String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         return urlConn.getResponseCode() + "|" + response;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context, TaxiLibre.class);
+        startActivity(intent);
+        this.finish();
     }
 }

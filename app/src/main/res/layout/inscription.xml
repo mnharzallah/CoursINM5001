@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/inscr_chauffeur"
         android:padding="25sp"
+        android:textAllCaps="false"
         android:layout_weight="1"
         android:textColor="#000000"
         android:textStyle="bold"
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:text="@string/inscr_client"
         android:padding="25sp"
+        android:textAllCaps="false"
         android:layout_weight="1"
         android:textColor="#000000"
         android:textStyle="bold"
@@ -52,8 +54,9 @@
         android:layout_height="wrap_content"
         android:text="@string/retourMain"
         android:textColor="#D8D8D8"
+        android:textAllCaps="false"
         android:layout_weight="1"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="78dp"
         android:background="@android:color/transparent"/>
     <TextView
     android:id="@+id/copyright"    

@@ -111,6 +111,7 @@ public class InscChauffeurs extends Activity implements TextWatcher {
 
                 Intent intent = new Intent(context, Inscription.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -208,5 +209,13 @@ public class InscChauffeurs extends Activity implements TextWatcher {
         String response = Utilisateurs.convertStreamToString(input);
         System.out.println(response);
         return urlConn.getResponseCode();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context, Inscription.class);
+        startActivity(intent);
+        finish();
     }
 }

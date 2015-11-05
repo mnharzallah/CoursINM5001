@@ -27,11 +27,12 @@
     <string name="login">Authentification</string>
     <string name="nomUtilisateur">"Nom d'utilisateur"</string>
     <string name="motDePasse">Mot de passe</string>
-    <string name="authentication">Se connecter</string>
+    <string name="authentication">Se Connecter</string>
     <string name="retourMain">Retour</string>
     <string name="retourInsc">Retour</string>
+    <string name="deconnecter">Se Deconnecter</string>
     <string name="cocherClient">Client</string>
     <string name="cocherChauffeur">Chauffeur</string>
     <string name="commande">""</string>
-    <string name="commandeText">Commander un taxi</string>
+    <string name="commandeText">Commander Un Taxi</string>
 </resources>

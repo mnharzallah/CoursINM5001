@@ -104,7 +104,7 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         bienvenue = (TextView) findViewById(R.id.bienvenue);
         location = (TextView) findViewById(R.id.location);
-        retour = (Button) findViewById(R.id.retourInsc);
+        retour = (Button) findViewById(R.id.deconnecter);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
@@ -142,6 +142,7 @@ public class ChauffeurGUI extends FragmentActivity implements
                 positionAjour.put("latitude", 0.0);
                 positionAjour.put("disponible", "N");
                 new MyAsyncTask().execute();
+                finish();
             }
         });
     }
@@ -292,5 +293,13 @@ public class ChauffeurGUI extends FragmentActivity implements
     public void onDestroy() {
         this.mWakeLock.release();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context, TaxiLibre.class);
+        startActivity(intent);
+        this.finish();
     }
 }

@@ -15,15 +15,16 @@
     <Button
         android:id="@+id/commande"
         android:layout_width="380dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:textAllCaps="false"
         android:shadowRadius="15"
         android:shadowColor="#000000"
-        android:layout_marginTop="30dip"
+        android:layout_marginTop="20dip"
         android:text="@string/commandeText" />
     <fragment
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/googleMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,23 +49,26 @@
         android:textStyle="bold"
         android:textColor="#D8D8D8"
         android:textSize="20sp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/resultat"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginLeft="15dip"
+        android:textSize="15sp"
+        android:textAlignment="center"
         android:textColor="#D8D8D8"
-        android:layout_marginTop="0dp"/>
+        android:layout_marginTop="10dp"/>
     <Button 
-        android:id="@+id/retourInsc"
+        android:id="@+id/deconnecter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dip"
-        android:text="@string/retourInsc"
+        android:layout_marginTop="140dp"
+        android:text="@string/deconnecter"
         android:textColor="#D8D8D8"
+        android:textSize="13dp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
         android:background="@android:color/transparent"/>
     <TextView
     android:id="@+id/copyright"    

@@ -57,7 +57,17 @@ public class Inscription extends Activity {
 
                 Intent intent = new Intent(context, TaxiLibre.class);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Context context = this;
+        Intent intent = new Intent(context, TaxiLibre.class);
+        startActivity(intent);
+        finish();
     }
 }

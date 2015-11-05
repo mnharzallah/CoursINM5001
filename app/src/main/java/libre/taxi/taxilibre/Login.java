@@ -92,6 +92,7 @@ public class Login extends Activity implements TextWatcher {
 
                 Intent intent = new Intent(context, TaxiLibre.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -142,9 +143,11 @@ public class Login extends Activity implements TextWatcher {
                 if (typeChoisi.equals("client")) {
                     Intent intent = new Intent(context, Commande.class);
                     startActivity(intent);
+                    finish();
                 } else if (typeChoisi.equals("chauffeur")) {
                     Intent intent = new Intent(context, ChauffeurGUI.class);
                     startActivity(intent);
+                    finish();
                 }
             } else {
                 TextView resulEnreg = (TextView) findViewById(R.id.resultat);
@@ -208,5 +211,13 @@ public class Login extends Activity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context, TaxiLibre.class);
+        startActivity(intent);
+        finish();
     }
 }

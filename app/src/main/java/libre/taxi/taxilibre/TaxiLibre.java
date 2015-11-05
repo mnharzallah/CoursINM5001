@@ -25,6 +25,9 @@ public class TaxiLibre extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         setContentView(R.layout.taxi_libre);
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
@@ -40,13 +43,22 @@ public class TaxiLibre extends Activity {
                 startActivity(intent);
             }
         });
-        
+
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                
+
                 Intent intent = new Intent(context, Login.class);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), TaxiLibre.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
     }
 }

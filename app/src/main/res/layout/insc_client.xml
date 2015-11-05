@@ -86,6 +86,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dip"
         android:text="@string/button_send"
+        android:textAllCaps="false"
         android:background="@drawable/rounded_button"/>
     <TextView
     android:id="@+id/resultat"    
@@ -102,6 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="110dip"
         android:text="@string/retourInsc"
+        android:textAllCaps="false"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>
     <TextView
