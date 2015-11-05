@@ -63,7 +63,8 @@
         android:textSize="20sp"
         android:hint="@string/matriculeChauffeur" 
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/rounded_edittext"
+        android:inputType="number" />
     <EditText 
         android:id="@+id/passeChauffeur"
         android:layout_width="300dp"
