@@ -109,7 +109,7 @@ public class InscChauffeurs extends Activity implements TextWatcher {
         retourInsc.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, Inscription.class);
+                Intent intent = new Intent(context, TaxiLibre.class);
                 startActivity(intent);
                 finish();
             }
@@ -214,7 +214,7 @@ public class InscChauffeurs extends Activity implements TextWatcher {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(context, Inscription.class);
+        Intent intent = new Intent(context, TaxiLibre.class);
         startActivity(intent);
         finish();
     }
