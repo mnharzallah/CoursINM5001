@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:textColor="#000000"
         android:textStyle="bold"
-        android:shadowRadius="20"
+        android:shadowRadius="15"
         android:shadowColor="#000000"
         android:background="@drawable/rounded_button"/>
     <Button 
@@ -39,7 +39,7 @@
         android:layout_weight="1"
         android:textColor="#000000"
         android:textStyle="bold"
-        android:shadowRadius="20"
+        android:shadowRadius="15"
         android:shadowColor="#000000"
         android:background="@drawable/rounded_button"/>
 </LinearLayout>
