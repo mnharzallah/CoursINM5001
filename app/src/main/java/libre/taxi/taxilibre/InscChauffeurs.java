@@ -147,7 +147,7 @@ public class InscChauffeurs extends Activity implements TextWatcher {
         } else if (!Chauffeurs.validerMatricule(textMatChauffeur.getText().toString()) && s == textMatChauffeur.getEditableText()) {
             textMatChauffeur.setError("Veuillez entrer 10 chiffres");
         } else if (!Utilisateurs.estUnMotDePasse(textPasseChauffeur.getText().toString()) && s == textPasseChauffeur.getEditableText()) {
-            textPasseChauffeur.setError("Veuillez entrer entrer 4 et 8 caracteres");
+            textPasseChauffeur.setError("Veuillez entrer entre 4 et 8 caracteres");
         }
     }
 

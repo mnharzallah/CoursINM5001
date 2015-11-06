@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.text.InputType;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -71,7 +71,11 @@ public class Login extends Activity implements TextWatcher {
             public void onClick(View v) {
                 if (Utilisateurs.isOnline(context)) {
                     nomUtilInput = nomUtil.getText().toString();
-                    loginData.put("nomUtilisateur", nomUtilInput);
+                    if ((typeChoisi.equals("client") && Utilisateurs.estUnCourrielValide(nomUtilInput)) ||
+                            typeChoisi.equals("chauffeur"))
+                        loginData.put("nomUtilisateur", nomUtilInput);
+                    else if (typeChoisi.equals("client") && !Utilisateurs.estUnCourrielValide(nomUtilInput))
+                        loginData.put("nomUtilisateur", "");
 
                     motDePasse = motPasse.getText().toString();
                     loginData.put("motDePasse", motDePasse);
@@ -81,7 +85,7 @@ public class Login extends Activity implements TextWatcher {
                             (typeChoisi.equals("client") || typeChoisi.equals("chauffeur")))
                         new MyAsyncTask().execute();
                     else
-                        resulEnreg.setText("Un ou plusieurs champs vide!!!");
+                        resulEnreg.setText("Nom d'utilisateur ou mot de passe invalide!!!");
                 } else
                     resulEnreg.setText("Verifier votre connexion internet!!!");
             }
@@ -109,6 +113,7 @@ public class Login extends Activity implements TextWatcher {
                     nomUtil.setHint("Courriel");
                     nomUtil.setError("");
                     nomUtil.setText("");
+                    nomUtil.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     break;
                 }
             case R.id.cocherChauffeur:
@@ -117,6 +122,7 @@ public class Login extends Activity implements TextWatcher {
                     nomUtil.setHint("Matricule");
                     nomUtil.setError("");
                     nomUtil.setText("");
+                    nomUtil.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
                     break;
                 }
         }
