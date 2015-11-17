@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,24 +37,31 @@ import android.location.LocationManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import net.sf.json.JSONObject;
 
 public class ChauffeurGUI extends FragmentActivity implements
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, OnMarkerClickListener {
 
     GoogleMap googleMap;
     TextView bienvenue = null;
     Button retour = null;
+    Button accepter = null;
+    Button refuser = null;
     static JSONObject positionAjour = new JSONObject();
     Double longitude;
     Double latitude;
+    Double longDest;
+    Double latDest;
     TextView result = null;
     protected PowerManager.WakeLock mWakeLock;
     Context context = this;
+    static Marker myMarker;
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 60000;
@@ -105,6 +115,10 @@ public class ChauffeurGUI extends FragmentActivity implements
         bienvenue = (TextView) findViewById(R.id.bienvenue);
         location = (TextView) findViewById(R.id.location);
         retour = (Button) findViewById(R.id.deconnecter);
+        accepter = (Button) findViewById(R.id.accept);
+        accepter.setVisibility(View.INVISIBLE);
+        refuser = (Button) findViewById(R.id.refuse);
+        refuser.setVisibility(View.INVISIBLE);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
@@ -132,6 +146,32 @@ public class ChauffeurGUI extends FragmentActivity implements
                 .build();
 
                 final Context context = this;
+
+        /**
+         * s'executent a la reception de la commande
+         */
+        latDest = 45.50866;
+        longDest = -73.56849;
+        googleMap.setOnMarkerClickListener(this);
+        accepter.setVisibility(View.VISIBLE);
+        refuser.setVisibility(View.VISIBLE);
+
+
+        accepter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myMarker = taxi(latDest, longDest);
+                accepter.setVisibility(View.INVISIBLE);
+                refuser.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        refuser.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                accepter.setVisibility(View.INVISIBLE);
+                refuser.setVisibility(View.INVISIBLE);
+            }
+        });
+
         retour.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, TaxiLibre.class);
@@ -215,6 +255,21 @@ public class ChauffeurGUI extends FragmentActivity implements
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         locationTv.setText("Latitude:" + latitude + ", Longitude:" + longitude);
         new MyAsyncTask().execute();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (marker.equals(myMarker))
+        {
+            String uri = "http://maps.google.com/maps?saddr="
+                    + positionAjour.getString("latitude") + ","
+                    + positionAjour.getString("longitude") + "&daddr="
+                    + latDest + "," + longDest;
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+            startActivity(intent);
+        }
+        return true;
     }
 
     private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
@@ -301,5 +356,18 @@ public class ChauffeurGUI extends FragmentActivity implements
         Intent intent = new Intent(context, TaxiLibre.class);
         startActivity(intent);
         this.finish();
+    }
+
+    public Marker taxi(Double latitude, Double longitude){
+
+        Marker destinationMarker;
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
+        LatLng latLngDest = new LatLng(latitude, longitude);
+        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLngDest).title("Customer location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDest));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mp.start();
+        return destinationMarker;
     }
 }
