@@ -26,6 +26,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -51,21 +53,23 @@ public class ChauffeurGUI extends FragmentActivity implements
     GoogleMap googleMap;
     TextView bienvenue = null;
     Button retour = null;
-    Button accepter = null;
-    Button refuser = null;
+    static Button accepter = null;
+    static Button refuser = null;
     static JSONObject positionAjour = new JSONObject();
     Double longitude;
     Double latitude;
-    Double longDest;
-    Double latDest;
+    static Double longDest;
+    static Double latDest;
     TextView result = null;
+    TextView note = null;
     protected PowerManager.WakeLock mWakeLock;
     Context context = this;
     static Marker myMarker;
+    static String afficherNote = "";
 
     private static final String TAG = "LocationActivity";
-    private static final long INTERVAL = 60000;
-    private static final long FASTEST_INTERVAL = 60000;
+    private static final long INTERVAL = 30000;
+    private static final long FASTEST_INTERVAL = 30000;
     TextView location;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -74,7 +78,7 @@ public class ChauffeurGUI extends FragmentActivity implements
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setSmallestDisplacement(30);
+        //mLocationRequest.setSmallestDisplacement(30);
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -87,6 +91,8 @@ public class ChauffeurGUI extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
+        note = (TextView) findViewById(R.id.note);
+
 
         /* This code together with the one in onDestroy()
          * will make the screen be always on until this Activity gets destroyed. */
@@ -147,15 +153,7 @@ public class ChauffeurGUI extends FragmentActivity implements
 
                 final Context context = this;
 
-        /**
-         * s'executent a la reception de la commande
-         */
-        latDest = 45.50866;
-        longDest = -73.56849;
         googleMap.setOnMarkerClickListener(this);
-        accepter.setVisibility(View.VISIBLE);
-        refuser.setVisibility(View.VISIBLE);
-
 
         accepter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -250,6 +248,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         positionAjour.put("longitude", longitude);
         positionAjour.put("latitude", latitude);
         positionAjour.put("disponible", "Y");
+        positionAjour.put("accepteCommande", "O");
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -272,12 +271,12 @@ public class ChauffeurGUI extends FragmentActivity implements
         return true;
     }
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             // TODO Auto-generated method stub
-            int result = 0;
+            String result = "";
             try {
                 result = postData(positionAjour);
             } catch (UnsupportedEncodingException e) {
@@ -289,7 +288,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(String result) {
             final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
 
             long currentTime=System.currentTimeMillis(); //getting current time in millis
@@ -297,7 +296,7 @@ public class ChauffeurGUI extends FragmentActivity implements
             Calendar cal=Calendar.getInstance();
             cal.setTimeInMillis(currentTime);
             String showTime=String.format("%1$tI:%1$tM:%1$tS %1$Tp",cal);//shows time in format 10:30:45 am
-            if (result == 202) {
+            if (result.substring(0,3).equals("202") || result.substring(0,3).equals("200") || result.substring(0,3).equals("511")) {
                 resulEnreg.setText("Derniere mise a jour de Position" + " " + showTime);
             }
             else {
@@ -306,6 +305,15 @@ public class ChauffeurGUI extends FragmentActivity implements
                 else
                     resulEnreg.setText("Verifier votre connexion internet!!!");
             }
+
+            if (result.substring(result.indexOf("|") + 1,result.length()).equals("appel") ) {
+                latDest = 45.50866;
+                longDest = -73.56849;
+                accepter.setVisibility(View.VISIBLE);
+                refuser.setVisibility(View.VISIBLE);
+                afficherNote = result.substring(result.indexOf("|") + 1, result.length());
+            }
+
             resulEnreg.setVisibility(View.VISIBLE);
             resulEnreg.postDelayed(new Runnable() {
                 public void run() {
@@ -315,10 +323,11 @@ public class ChauffeurGUI extends FragmentActivity implements
         }
     }
 
-    public int postData(JSONObject positionAjour) throws IOException {
+    public String postData(JSONObject positionAjour) throws IOException {
 
         URL url = null;
         HttpURLConnection urlConn = null;
+        DataInputStream input;
 
         url = new URL ("http://libretaxi-env.elasticbeanstalk.com/chauffeur");
         urlConn = (HttpURLConnection) url.openConnection();
@@ -335,13 +344,15 @@ public class ChauffeurGUI extends FragmentActivity implements
         os.write(positionAjour.toString().getBytes());
         System.out.println(positionAjour.toString());
 
-        if (urlConn.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED) {
+        if (urlConn.getResponseCode() == 202) {
             System.out.println("J'ai reçu la mise à jour!");
+            input = new DataInputStream(urlConn.getInputStream());
+            String response = Utilisateurs.convertStreamToString(input);
+            System.out.println(response);
+            return urlConn.getResponseCode()+"|" +"appel";
         } else {
-            System.out.println(urlConn.getResponseCode());
+            return urlConn.getResponseCode()+"";
         }
-
-        return urlConn.getResponseCode();
     }
 
     @Override
@@ -363,8 +374,9 @@ public class ChauffeurGUI extends FragmentActivity implements
         Marker destinationMarker;
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
         LatLng latLngDest = new LatLng(latitude, longitude);
-        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLngDest).title("Customer location")
+        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLngDest).title(afficherNote)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location)));
+        destinationMarker.showInfoWindow();
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDest));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mp.start();

@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.location.Location;
 import android.util.Log;
@@ -53,9 +54,13 @@ public class Commande extends FragmentActivity implements
     Button commander = null;
     Button retour = null;
     static JSONObject commanderCh = new JSONObject();
-    Double longitude = -73.56849;
-    Double latitude = 45.50866;
+    //Double longitude = -73.56849;
+    //Double latitude = 45.50866;
+    Double longitude = -73.604245;
+    Double latitude = 45.626550;
     TextView result = null;
+    EditText commentaire = null;
+    String commentaireClient;
     Context context = this;
 
     private static final String TAG = "LocationActivity";
@@ -82,8 +87,10 @@ public class Commande extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
-        commanderCh.put("longitude", -73.56849);
-        commanderCh.put("latitude", 45.50866);
+        //commanderCh.put("longitude", -73.56849);
+        //commanderCh.put("latitude", 45.50866);
+        commanderCh.put("longitude", -73.624867);
+        commanderCh.put("latitude", 45.602742);
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =
@@ -106,6 +113,7 @@ public class Commande extends FragmentActivity implements
         bienvenue = (TextView) findViewById(R.id.bienvenue);
         commander = (Button) findViewById(R.id.commande);
         location = (TextView) findViewById(R.id.location);
+        commentaire = (EditText) findViewById(R.id.commentaire);
         retour = (Button) findViewById(R.id.deconnecter);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
@@ -143,6 +151,7 @@ public class Commande extends FragmentActivity implements
                             !commanderCh.getString("motDePasse").equals("") &&
                             !commanderCh.getString("latitude").equals("") &&
                             !commanderCh.getString("longitude").equals("")) {
+                        commentaireClient = commentaire.getText().toString();
                         new MyAsyncTask().execute();
                     } else
                         result.setText("Position non disponible!!!");
@@ -215,6 +224,7 @@ public class Commande extends FragmentActivity implements
         LatLng latLng = new LatLng(latitude, longitude);
         commanderCh.put("longitude", longitude);
         commanderCh.put("latitude", latitude);
+        //commanderCh.put("commentaireClient",commentaire);
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -240,7 +250,11 @@ public class Commande extends FragmentActivity implements
         @Override
         protected void onPostExecute(String result) {
             TextView resulEnreg = (TextView) findViewById(R.id.resultat);
-            resulEnreg.setText(result.substring(result.indexOf("|") + 1, result.length() - 1));
+            if (!result.substring(0,3).equals("503") || !result.substring(0,3).equals("202")) {
+                resulEnreg.setText(result.substring(result.indexOf("|") + 1, result.length()));
+            }else{
+                resulEnreg.setText("Aucun chauffeur n'est disponible dans votre secteur!!!");
+            }
         }
     }
 
@@ -266,15 +280,14 @@ public class Commande extends FragmentActivity implements
         System.out.println(commanderCh.toString());
 
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            System.out.println("OK");
+            input = new DataInputStream(urlConn.getInputStream());
+            String response = Utilisateurs.convertStreamToString(input);
+            return urlConn.getResponseCode() + "|" + response;
         } else {
-            System.out.println(urlConn.getResponseCode());
+            return urlConn.getResponseCode()+"";
         }
 
-        input = new DataInputStream(urlConn.getInputStream());
-        String response = Utilisateurs.convertStreamToString(input);
-        System.out.println(response);
-        return urlConn.getResponseCode() + "|" + response;
+
     }
 
     @Override
