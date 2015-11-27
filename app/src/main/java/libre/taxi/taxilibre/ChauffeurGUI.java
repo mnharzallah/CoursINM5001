@@ -56,8 +56,8 @@ public class ChauffeurGUI extends FragmentActivity implements
     static Button accepter = null;
     static Button refuser = null;
     static JSONObject positionAjour = new JSONObject();
-    Double longitude;
-    Double latitude;
+    static Double longitude;
+    static Double latitude;
     static Double longDest;
     static Double latDest;
     TextView result = null;
@@ -92,7 +92,6 @@ public class ChauffeurGUI extends FragmentActivity implements
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
         note = (TextView) findViewById(R.id.note);
-
 
         /* This code together with the one in onDestroy()
          * will make the screen be always on until this Activity gets destroyed. */
@@ -160,6 +159,9 @@ public class ChauffeurGUI extends FragmentActivity implements
                 myMarker = taxi(latDest, longDest);
                 accepter.setVisibility(View.INVISIBLE);
                 refuser.setVisibility(View.INVISIBLE);
+                positionAjour.put("disponible", "N");
+                positionAjour.put("accepteCommande", "O");
+                new Commande().execute();
             }
         });
 
@@ -167,6 +169,8 @@ public class ChauffeurGUI extends FragmentActivity implements
             public void onClick(View v) {
                 accepter.setVisibility(View.INVISIBLE);
                 refuser.setVisibility(View.INVISIBLE);
+                positionAjour.put("accepteCommande", "N");
+                new Commande().execute();
             }
         });
 
@@ -179,7 +183,8 @@ public class ChauffeurGUI extends FragmentActivity implements
                 positionAjour.put("longitude", 0.0);
                 positionAjour.put("latitude", 0.0);
                 positionAjour.put("disponible", "N");
-                new MyAsyncTask().execute();
+                positionAjour.put("accepteCommande", "N");
+                new Commande().execute();
                 finish();
             }
         });
@@ -203,7 +208,8 @@ public class ChauffeurGUI extends FragmentActivity implements
         positionAjour.put("longitude", 0.0);
         positionAjour.put("latitude", 0.0);
         positionAjour.put("disponible", "N");
-        new MyAsyncTask().execute();
+        positionAjour.put("accepteCommande", "N");
+        new Commande().execute();
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -247,8 +253,8 @@ public class ChauffeurGUI extends FragmentActivity implements
         positionAjour.put("motDePasse", motDePasseChauffeur);
         positionAjour.put("longitude", longitude);
         positionAjour.put("latitude", latitude);
-        positionAjour.put("disponible", "Y");
-        positionAjour.put("accepteCommande", "O");
+        positionAjour.put("disponible", "O");
+        positionAjour.put("accepteCommande", "N");
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -268,6 +274,7 @@ public class ChauffeurGUI extends FragmentActivity implements
             intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
             startActivity(intent);
         }
+        myMarker.remove();
         return true;
     }
 
@@ -296,7 +303,7 @@ public class ChauffeurGUI extends FragmentActivity implements
             Calendar cal=Calendar.getInstance();
             cal.setTimeInMillis(currentTime);
             String showTime=String.format("%1$tI:%1$tM:%1$tS %1$Tp",cal);//shows time in format 10:30:45 am
-            if (result.substring(0,3).equals("202") || result.substring(0,3).equals("200") || result.substring(0,3).equals("511")) {
+            if (result.substring(0,3).equals("202") || result.substring(0,3).equals("200")) {
                 resulEnreg.setText("Derniere mise a jour de Position" + " " + showTime);
             }
             else {
@@ -306,12 +313,16 @@ public class ChauffeurGUI extends FragmentActivity implements
                     resulEnreg.setText("Verifier votre connexion internet!!!");
             }
 
-            if (result.substring(result.indexOf("|") + 1,result.length()).equals("appel") ) {
-                latDest = 45.50866;
-                longDest = -73.56849;
+            if (result.length() > 3 && result.substring(3,result.indexOf("!")).equals("Vous avez une commande") ) {
+                latDest = Double.parseDouble(result.substring(60,69));
+                System.out.println(latDest);
+                longDest = Double.parseDouble(result.substring(39,49));
+                System.out.println(longDest);
                 accepter.setVisibility(View.VISIBLE);
                 refuser.setVisibility(View.VISIBLE);
-                afficherNote = result.substring(result.indexOf("|") + 1, result.length());
+                final MediaPlayer mp1 = MediaPlayer.create(ChauffeurGUI.this, R.raw.sound);
+                mp1.start();
+                afficherNote = "appel";//result.substring(result.indexOf("|") + 1, result.length());
             }
 
             resulEnreg.setVisibility(View.VISIBLE);
@@ -322,6 +333,30 @@ public class ChauffeurGUI extends FragmentActivity implements
             }, 7000);
         }
     }
+
+
+    private class Commande extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            String result = "";
+            try {
+                result = postData(positionAjour);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+    }
+
+
 
     public String postData(JSONObject positionAjour) throws IOException {
 
@@ -345,11 +380,10 @@ public class ChauffeurGUI extends FragmentActivity implements
         System.out.println(positionAjour.toString());
 
         if (urlConn.getResponseCode() == 202) {
-            System.out.println("J'ai reçu la mise à jour!");
             input = new DataInputStream(urlConn.getInputStream());
             String response = Utilisateurs.convertStreamToString(input);
             System.out.println(response);
-            return urlConn.getResponseCode()+"|" +"appel";
+            return urlConn.getResponseCode()+""+ response;
         } else {
             return urlConn.getResponseCode()+"";
         }
@@ -366,6 +400,11 @@ public class ChauffeurGUI extends FragmentActivity implements
         super.onBackPressed();
         Intent intent = new Intent(context, TaxiLibre.class);
         startActivity(intent);
+        positionAjour.put("longitude", 0.0);
+        positionAjour.put("latitude", 0.0);
+        positionAjour.put("disponible", "N");
+        positionAjour.put("accepteCommande", "N");
+        new Commande().execute();
         this.finish();
     }
 

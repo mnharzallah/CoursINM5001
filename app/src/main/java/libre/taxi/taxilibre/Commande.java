@@ -91,6 +91,8 @@ public class Commande extends FragmentActivity implements
         //commanderCh.put("latitude", 45.50866);
         commanderCh.put("longitude", -73.624867);
         commanderCh.put("latitude", 45.602742);
+        //commanderCh.put("longitude", -73.53916);
+        //commanderCh.put("latitude", 45.5911);
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =
@@ -250,9 +252,9 @@ public class Commande extends FragmentActivity implements
         @Override
         protected void onPostExecute(String result) {
             TextView resulEnreg = (TextView) findViewById(R.id.resultat);
-            if (!result.substring(0,3).equals("503") || !result.substring(0,3).equals("202")) {
+            if (result.substring(0,3).equals("202")) {
                 resulEnreg.setText(result.substring(result.indexOf("|") + 1, result.length()));
-            }else{
+            }else if (result.substring(0,3).equals("503")){
                 resulEnreg.setText("Aucun chauffeur n'est disponible dans votre secteur!!!");
             }
         }
@@ -282,8 +284,11 @@ public class Commande extends FragmentActivity implements
         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             input = new DataInputStream(urlConn.getInputStream());
             String response = Utilisateurs.convertStreamToString(input);
+            System.out.println(response);
+            System.out.println(urlConn.getResponseCode());
             return urlConn.getResponseCode() + "|" + response;
         } else {
+            System.out.println(urlConn.getResponseCode());
             return urlConn.getResponseCode()+"";
         }
 
