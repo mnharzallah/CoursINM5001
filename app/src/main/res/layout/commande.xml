@@ -15,24 +15,26 @@
     <EditText
         android:id="@+id/commentaire"
         android:layout_marginTop="20dp"
-        android:layout_width="380dp"
-        android:layout_height="30dp"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
         android:textColor="#000000"
         android:hint="Un petit message a votre chauffeur?"
         android:textColorHint="#000000"
-        android:background="#ffffff"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:background="@drawable/edittextshape"/>
     <Button
         android:id="@+id/commande"
-        android:layout_width="382dp"
+        android:layout_width="360dp"
         android:layout_height="40dp"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:layout_marginTop="10dp"
-        android:shadowColor="#000000"
-        android:text="@string/commandeText"/>
+        android:shadowColor="#A8A8A8"
+        android:text="@string/commandeText"
+        android:background="@drawable/buttonshape"/>
     <fragment
         android:id="@+id/googleMap"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment"
@@ -68,20 +70,11 @@
         android:id="@+id/deconnecter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="80dp"
         android:text="@string/deconnecter"
         android:textColor="#D8D8D8"
         android:textSize="13dp"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:background="@android:color/transparent"/>
-    <TextView
-    android:id="@+id/copyright"    
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:textSize="10sp"
-    android:text="@string/copyright"
-    android:layout_marginLeft="220dip"
-    android:textColor="#000000"/>
 </LinearLayout>

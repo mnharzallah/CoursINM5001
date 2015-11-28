@@ -60,7 +60,7 @@ public class Commande extends FragmentActivity implements
     Double latitude = 45.626550;
     TextView result = null;
     EditText commentaire = null;
-    String commentaireClient;
+    String commentaireClient="";
     Context context = this;
 
     private static final String TAG = "LocationActivity";
@@ -154,6 +154,7 @@ public class Commande extends FragmentActivity implements
                             !commanderCh.getString("latitude").equals("") &&
                             !commanderCh.getString("longitude").equals("")) {
                         commentaireClient = commentaire.getText().toString();
+                        commanderCh.put("commentaireClient",commentaireClient);
                         new MyAsyncTask().execute();
                     } else
                         result.setText("Position non disponible!!!");
@@ -226,7 +227,6 @@ public class Commande extends FragmentActivity implements
         LatLng latLng = new LatLng(latitude, longitude);
         commanderCh.put("longitude", longitude);
         commanderCh.put("latitude", latitude);
-        //commanderCh.put("commentaireClient",commentaire);
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));

@@ -35,36 +35,36 @@
     <EditText 
         android:id="@+id/nomUtil"
         android:layout_marginTop="20dip"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:textColor="#000000"
         android:hint="Courriel"
         android:textColorHint="#000000"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/edittextshape"
         android:gravity="center"/>
     <EditText
         android:id="@+id/motDePasse"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dip"
         android:hint="@string/motDePasse"
         android:inputType="textPassword"
         android:textColor="#000000"
         android:textColorHint="#000000"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/edittextshape"
         android:gravity="center"/>
     <Button 
         android:id="@+id/authentication"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dip"
         android:text="@string/authentication"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:textAllCaps="false"
-        android:background="@drawable/rounded_button"/>
+        android:background="@drawable/buttonshape"/>
     <TextView
     android:id="@+id/resultat"    
     android:layout_width="fill_parent"
@@ -83,13 +83,4 @@
         android:textAllCaps="false"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>
-    <TextView
-    android:id="@+id/copyright"    
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:textSize="10sp"
-    android:text="@string/copyright"
-    android:layout_marginTop="120dp"
-    android:textColor="#000000"/>
 </LinearLayout>

@@ -103,7 +103,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
         ViewGroup.LayoutParams params = supportMapFragment.getView().getLayoutParams();
-        params.height = 540;
+        params.height = 580;
         supportMapFragment.getView().setLayoutParams(params);
 
         googleMap = supportMapFragment.getMap();
@@ -273,8 +273,10 @@ public class ChauffeurGUI extends FragmentActivity implements
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
             intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
             startActivity(intent);
+            myMarker.remove();
+        }else{
+            System.out.println("Position du Chauffeur");
         }
-        myMarker.remove();
         return true;
     }
 
@@ -322,7 +324,7 @@ public class ChauffeurGUI extends FragmentActivity implements
                 refuser.setVisibility(View.VISIBLE);
                 final MediaPlayer mp1 = MediaPlayer.create(ChauffeurGUI.this, R.raw.sound);
                 mp1.start();
-                afficherNote = "appel";//result.substring(result.indexOf("|") + 1, result.length());
+                afficherNote = result.substring(result.lastIndexOf("-")+20, result.length());
             }
 
             resulEnreg.setVisibility(View.VISIBLE);

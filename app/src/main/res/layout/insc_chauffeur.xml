@@ -13,7 +13,7 @@
     android:textSize="25dp"/>
     <EditText 
         android:id="@+id/nomChauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:textColorHint="#000000"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
@@ -23,10 +23,10 @@
         android:hint="@string/nomChauffeur" 
         android:textSize="20sp"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/prenomChauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:textColorHint="#000000"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
@@ -36,10 +36,10 @@
         android:hint="@string/prenomChauffeur"
         android:textSize="20sp"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/telChauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
@@ -50,10 +50,10 @@
         android:hint="@string/telChauffeur" 
         android:textSize="20sp"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/matriculeChauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:textColorHint="#000000"
         android:layout_marginLeft="10dp"
@@ -63,11 +63,11 @@
         android:textSize="20sp"
         android:hint="@string/matriculeChauffeur" 
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/edittextshape"
         android:inputType="number" />
     <EditText 
         android:id="@+id/passeChauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:textColor="#000000"
         android:layout_marginLeft="10dp"
@@ -78,16 +78,16 @@
         android:hint="@string/passeChauffeur" 
         android:textSize="20sp"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <Button 
         android:id="@+id/Enreg_Chauffeur"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dip"
         android:text="@string/Enreg_Chauffeur"
         android:textAllCaps="false"
-        android:background="@drawable/rounded_button"/>
+        android:background="@drawable/buttonshape"/>
     <TextView
         android:id="@+id/resultat"
         android:layout_width="fill_parent"
@@ -102,17 +102,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dip"
+        android:textStyle="bold"
         android:text="@string/retourInsc"
         android:textAllCaps="false"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>
-    <TextView
-    android:id="@+id/copyright"    
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:textSize="10sp"
-    android:text="@string/copyright"
-    android:layout_marginLeft="230dip"
-    android:textColor="#000000"/>
 </LinearLayout>

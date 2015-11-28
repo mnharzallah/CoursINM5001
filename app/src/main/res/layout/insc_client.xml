@@ -13,7 +13,7 @@
     android:textSize="22sp"/>
     <EditText 
         android:id="@+id/nomClient"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
@@ -23,10 +23,10 @@
         android:hint="@string/nomClient" 
         android:textSize="20sp"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/prenomClient"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
@@ -36,10 +36,10 @@
         android:textColor="#000000"
         android:textColorHint="#000000"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/telClient"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:inputType="number"
@@ -50,10 +50,10 @@
         android:textColor="#000000"
         android:textColorHint="#000000"
         android:padding="8dp"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/courriel"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
@@ -64,10 +64,10 @@
         android:textSize="20sp"
         android:padding="8dp"
         android:textColor="#000000"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <EditText 
         android:id="@+id/passeClient"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"    
         android:gravity="center"
@@ -78,16 +78,16 @@
         android:inputType="textPassword"
         android:padding="8dp"
         android:textColor="#000000"
-        android:background="@drawable/rounded_edittext"/>
+        android:background="@drawable/edittextshape"/>
     <Button 
         android:id="@+id/button_send"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dip"
         android:text="@string/button_send"
         android:textAllCaps="false"
-        android:background="@drawable/rounded_button"/>
+        android:background="@drawable/buttonshape"/>
     <TextView
     android:id="@+id/resultat"    
     android:layout_width="fill_parent"
@@ -102,17 +102,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dip"
+        android:textStyle="bold"
         android:text="@string/retourInsc"
         android:textAllCaps="false"
         android:textColor="#D8D8D8"
         android:background="@android:color/transparent"/>
-    <TextView
-    android:id="@+id/copyright"    
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:textSize="10sp"
-    android:text="@+string/copyright"
-    android:layout_marginLeft="230dip"
-    android:textColor="#000000"/>
 </LinearLayout>
