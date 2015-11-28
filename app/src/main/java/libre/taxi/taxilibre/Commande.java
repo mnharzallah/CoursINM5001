@@ -1,7 +1,6 @@
 package libre.taxi.taxilibre;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.location.Location;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,23 +23,19 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import android.location.Criteria;
 import android.location.LocationManager;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import net.sf.json.JSONObject;
 
 public class Commande extends FragmentActivity implements
@@ -87,12 +81,10 @@ public class Commande extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
-        //commanderCh.put("longitude", -73.56849);
-        //commanderCh.put("latitude", 45.50866);
-        commanderCh.put("longitude", -73.624867);
-        commanderCh.put("latitude", 45.602742);
-        //commanderCh.put("longitude", -73.53916);
-        //commanderCh.put("latitude", 45.5911);
+        commanderCh.put("longitude", -73.58849);
+        commanderCh.put("latitude", 45.50866);
+        //commanderCh.put("longitude", -73.624867);
+        //commanderCh.put("latitude", 45.602742);
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =
@@ -252,7 +244,7 @@ public class Commande extends FragmentActivity implements
         @Override
         protected void onPostExecute(String result) {
             TextView resulEnreg = (TextView) findViewById(R.id.resultat);
-            if (result.substring(0,3).equals("202")) {
+            if (result.substring(0,3).equals("200") || result.substring(0,3).equals("202")) {
                 resulEnreg.setText(result.substring(result.indexOf("|") + 1, result.length()));
             }else if (result.substring(0,3).equals("503")){
                 resulEnreg.setText("Aucun chauffeur n'est disponible dans votre secteur!!!");
@@ -291,8 +283,6 @@ public class Commande extends FragmentActivity implements
             System.out.println(urlConn.getResponseCode());
             return urlConn.getResponseCode()+"";
         }
-
-
     }
 
     @Override

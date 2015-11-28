@@ -62,10 +62,12 @@ public class ChauffeurGUI extends FragmentActivity implements
     static Double latDest;
     TextView result = null;
     TextView note = null;
+    TextView afficherAdresseClient = null;
     protected PowerManager.WakeLock mWakeLock;
     Context context = this;
     static Marker myMarker;
     static String afficherNote = "";
+    static String adresseClient = "";
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 30000;
@@ -92,6 +94,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
         note = (TextView) findViewById(R.id.note);
+        afficherAdresseClient = (TextView) findViewById(R.id.adresseClient);
 
         /* This code together with the one in onDestroy()
          * will make the screen be always on until this Activity gets destroyed. */
@@ -103,7 +106,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
         ViewGroup.LayoutParams params = supportMapFragment.getView().getLayoutParams();
-        params.height = 580;
+        params.height = 600;
         supportMapFragment.getView().setLayoutParams(params);
 
         googleMap = supportMapFragment.getMap();
@@ -299,7 +302,7 @@ public class ChauffeurGUI extends FragmentActivity implements
         @Override
         protected void onPostExecute(String result) {
             final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
-
+            afficherAdresseClient.setText("");
             long currentTime=System.currentTimeMillis(); //getting current time in millis
             //converting it into user readable format
             Calendar cal=Calendar.getInstance();
@@ -324,6 +327,7 @@ public class ChauffeurGUI extends FragmentActivity implements
                 refuser.setVisibility(View.VISIBLE);
                 final MediaPlayer mp1 = MediaPlayer.create(ChauffeurGUI.this, R.raw.sound);
                 mp1.start();
+                adresseClient = result.substring(70).replace(", Canada - commentaireClient ", "\n");
                 afficherNote = result.substring(result.lastIndexOf("-")+20, result.length());
             }
 
@@ -415,12 +419,13 @@ public class ChauffeurGUI extends FragmentActivity implements
         Marker destinationMarker;
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
         LatLng latLngDest = new LatLng(latitude, longitude);
-        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLngDest).title(afficherNote)
+        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLngDest)//.title(afficherNote)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location)));
         destinationMarker.showInfoWindow();
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDest));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mp.start();
+        afficherAdresseClient.setText(adresseClient);
         return destinationMarker;
     }
 }
