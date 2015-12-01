@@ -81,10 +81,10 @@ public class Commande extends FragmentActivity implements
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
         result = (TextView) findViewById(R.id.resultat);
-        commanderCh.put("longitude", -73.58849);
-        commanderCh.put("latitude", 45.50866);
-        //commanderCh.put("longitude", -73.624867);
-        //commanderCh.put("latitude", 45.602742);
+        //commanderCh.put("longitude", -73.58849);
+        //commanderCh.put("latitude", 45.50866);
+        commanderCh.put("longitude", -73.624867);
+        commanderCh.put("latitude", 45.602742);
 
         /* Afficher google map */
         SupportMapFragment supportMapFragment =

@@ -124,9 +124,9 @@ public class ChauffeurGUI extends FragmentActivity implements
         location = (TextView) findViewById(R.id.location);
         retour = (Button) findViewById(R.id.deconnecter);
         accepter = (Button) findViewById(R.id.accept);
-        accepter.setVisibility(View.INVISIBLE);
+        accepter.setVisibility(View.GONE);
         refuser = (Button) findViewById(R.id.refuse);
-        refuser.setVisibility(View.INVISIBLE);
+        refuser.setVisibility(View.GONE);
 
         if (!Login.loginData.isEmpty() && !Login.loginData.getString("nomUtilisateur").equals("")) {
             bienvenue.setText("Bienvenue " + Login.loginData.getString("nomUtilisateur"));
@@ -160,8 +160,8 @@ public class ChauffeurGUI extends FragmentActivity implements
         accepter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myMarker = taxi(latDest, longDest);
-                accepter.setVisibility(View.INVISIBLE);
-                refuser.setVisibility(View.INVISIBLE);
+                accepter.setVisibility(View.GONE);
+                refuser.setVisibility(View.GONE);
                 positionAjour.put("disponible", "N");
                 positionAjour.put("accepteCommande", "O");
                 new Commande().execute();
@@ -170,8 +170,8 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         refuser.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                accepter.setVisibility(View.INVISIBLE);
-                refuser.setVisibility(View.INVISIBLE);
+                accepter.setVisibility(View.GONE);
+                refuser.setVisibility(View.GONE);
                 positionAjour.put("accepteCommande", "N");
                 new Commande().execute();
             }
@@ -301,8 +301,12 @@ public class ChauffeurGUI extends FragmentActivity implements
 
         @Override
         protected void onPostExecute(String result) {
+            accepter.setVisibility(View.GONE);
+            refuser.setVisibility(View.GONE);
             final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
             afficherAdresseClient.setText("");
+            if (myMarker != null)
+                myMarker.remove();
             long currentTime=System.currentTimeMillis(); //getting current time in millis
             //converting it into user readable format
             Calendar cal=Calendar.getInstance();
@@ -313,22 +317,20 @@ public class ChauffeurGUI extends FragmentActivity implements
             }
             else {
                 if (Utilisateurs.isOnline(context))
-                    resulEnreg.setText("Position non disponible!!!");
+                    resulEnreg.setText("Un erreur s'est produit!!!");
                 else
                     resulEnreg.setText("Verifier votre connexion internet!!!");
             }
 
-            if (result.length() > 3 && result.substring(3,result.indexOf("!")).equals("Vous avez une commande") ) {
-                latDest = Double.parseDouble(result.substring(60,69));
-                System.out.println(latDest);
-                longDest = Double.parseDouble(result.substring(39,49));
-                System.out.println(longDest);
+            if (result.contains("Vous avez une commande") ) {
+                latDest = Double.parseDouble(result.substring(60, 69));
+                longDest = Double.parseDouble(result.substring(39, 49));
                 accepter.setVisibility(View.VISIBLE);
                 refuser.setVisibility(View.VISIBLE);
                 final MediaPlayer mp1 = MediaPlayer.create(ChauffeurGUI.this, R.raw.sound);
                 mp1.start();
                 adresseClient = result.substring(70).replace(", Canada - commentaireClient ", "\n");
-                afficherNote = result.substring(result.lastIndexOf("-")+20, result.length());
+                afficherNote = result.substring(result.lastIndexOf("-") + 20, result.length());
             }
 
             resulEnreg.setVisibility(View.VISIBLE);
@@ -339,7 +341,6 @@ public class ChauffeurGUI extends FragmentActivity implements
             }, 7000);
         }
     }
-
 
     private class Commande extends AsyncTask<Void, Void, String> {
 
@@ -361,8 +362,6 @@ public class ChauffeurGUI extends FragmentActivity implements
         protected void onPostExecute(String result) {
         }
     }
-
-
 
     public String postData(JSONObject positionAjour) throws IOException {
 
