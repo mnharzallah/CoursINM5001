@@ -30,6 +30,12 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -39,6 +45,7 @@ public class Login extends Activity implements TextWatcher {
 
     Button retour = null;
     Button login = null;
+    Button facebookbtn;
 
     EditText nomUtil = null;
     EditText motPasse = null;
@@ -50,12 +57,16 @@ public class Login extends Activity implements TextWatcher {
 
     static JSONObject loginData = new JSONObject();
     final Context context = this;
+    private CallbackManager mCallbackManager;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
@@ -63,9 +74,40 @@ public class Login extends Activity implements TextWatcher {
         login = (Button) findViewById(R.id.authentication);
         final TextView resulEnreg = (TextView) findViewById(R.id.resultat);
 
+        mCallbackManager = CallbackManager.Factory.create();
+
+        LoginButton facebookbtn = (LoginButton) findViewById(R.id.login_button);
+
+        facebookbtn.setReadPermissions("public_profile", "email", "user_friends");
+
         nomUtil = (EditText) findViewById(R.id.nomUtil);
         nomUtil.addTextChangedListener(this);
         motPasse = (EditText) findViewById(R.id.motDePasse);
+
+
+        facebookbtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                //Intent i = new Intent(Login.this, Commande.class);
+                //startActivity(i);
+                //System.out.print("Logged inggggg");
+                Intent intent = new Intent(context, Commande.class);
+                startActivity(intent);
+                //finish();
+            }
+
+            @Override
+            public void onCancel() {
+                //App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                //Log.i("Error", "Error");
+            }
+        });
+
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -100,6 +142,14 @@ public class Login extends Activity implements TextWatcher {
             }
         });
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
