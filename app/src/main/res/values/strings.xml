@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TaxiLibre</string>
+    <string name="facebook_app_id">884177514964584</string>
     <string name="text">""</string>
     <string name="textInsc">""</string>
     <string name="textLogin">""</string>

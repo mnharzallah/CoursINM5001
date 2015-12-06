@@ -34,6 +34,19 @@ android {
     }
 }
 
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'com.facebook.android:facebook-android-sdk:4.8.1'
+
+}
+
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/json-lib-2.4-jdk15.jar')
